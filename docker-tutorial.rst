@@ -5,7 +5,9 @@
 :author: Ken Cochrane
 :title: the-ultimate-docker-tutorial
 
+TODO:
 Topics
+
 - intro
 - what is docker
 - installation
@@ -29,7 +31,6 @@ Topics
     - public
     - private
     - search
-    
 - remote api
     - libraries
     - web ui's
@@ -37,23 +38,21 @@ Topics
     - how to
     - examples
 - using external mounts (not finished yet)
-
 - creating images, pushing and pulling.
 - docker run
     - limiting memory, cpu
     - detached vs attached
     - volume mounting
 
+.. image:: docker_logo.png
 
-<logo>
-<Table of contents>
+.. contents:: Table of Contents
 
 Introduction
 ============
-The goal of this tutorial is to introduce you to `Docker <http://docker.io>_`, show you what it can do, and how to get it up and running on your system, and how to use it to make your life better.
+The goal of this tutorial is to introduce you to `Docker <http://docker.io>`_, show you what it can do, and how to get it up and running on your system, and how to use it to make your life better.
 
-[TODO: Add link to github repo]
-This guide is open source and available on github.com. If you would like to add to it or fix something, please fork it and submit a pull request.
+This guide is open source and available on `github.com <https://github.com/kencochrane/docker-tutorial>`_. If you would like to add to it or fix something, please `fork it <https://github.com/kencochrane/docker-tutorial>`_ and submit a pull request.
 
 What is docker?
 ===============
@@ -100,7 +99,7 @@ The reason why Docker needs to run in a kernel version of 3.8 or greater is beca
 
 AUFS
 ~~~~
-Currently AUFS is the standard file system for Docker, but there is an effort underway to make the filesystem more pluggable, so that we can use different file systems with Docker. AUFS will most likely not be available in future Ubuntu releases, and UnionFS doesn't look like it will be getting added to the kernel anytime soon, so we can't add that as a replacement. The current replacement looks like `BTRFS <https://github.com/dotcloud/docker/issues/443> `_.
+Currently AUFS is the standard file system for Docker, but there is an effort underway to make the filesystem more pluggable, so that we can use different file systems with Docker. AUFS will most likely not be available in future Ubuntu releases, and UnionFS doesn't look like it will be getting added to the kernel anytime soon, so we can't add that as a replacement. The current replacement looks like `BTRFS <https://github.com/dotcloud/docker/issues/443>`_.
 
 Package Manager
 ---------------
@@ -165,6 +164,7 @@ Here is what you need to do to get it up and running on Ubuntu::
 
 Then run the docker daemon,
 
+::
     sudo $GOPATH/bin/docker -d
     
 If you make any changes to the code, run the ``go install`` command (above) to recompile docker. Feel free to change the git clone command above to your own fork, to make pull request's easier.
@@ -181,6 +181,8 @@ There are two ways to start the daemon, you can start it using an init script so
 
 To start it manually you need to use a command like this.
 
+::
+
     sudo <path to>/docker -d &
 
 When Docker starts, it will listen on 127.0.0.1:4243 to allow only local connections but you can set it to 0.0.0.0:4243 or a specific host ip to give access to everybody. 
@@ -196,6 +198,8 @@ To change the host and port that docker listens to you will need to use the ``-H
 
 When you do this, you need to also let the docker client know what daemon you want to connect too. To do that you have to also pass in the -H flag to with the ip:port of the daemon to connect too.
 
+::
+
     # Run docker in daemon mode on port 5555
     sudo <path to>/docker -H 0.0.0.0:5555 &
     
@@ -203,6 +207,8 @@ When you do this, you need to also let the docker client know what daemon you wa
     docker -H :5555 pull base
 
 You can use multiple -H, for example, if you want to listen on both tcp and a unix socket
+
+::
 
     # Run docker in daemon mode on 127.0.0.1:4243 and unix socket unix:///var/run/docker.sock
     sudo <path to>/docker -H tcp://127.0.0.1:4243 -H unix:///var/run/docker.sock
