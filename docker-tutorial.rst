@@ -283,13 +283,13 @@ Attach to a running container.
 
 Parameters
 ~~~~~~~~~~
-- container_id: The ID for the container you want to attach too.
+- CONTAINER_ID: The ID for the container you want to attach too.
 
 Usage
 ~~~~~
 ::
 
-    docker attach <container_id>
+    docker attach CONTAINER_ID
 
 Example
 ~~~~~~~
@@ -330,6 +330,7 @@ If the absolute path is provided instead of ‘.’, only the files and director
 Read a Dockerfile from standard in (stdin) without context
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
+
     docker build - < Dockerfile
     
 This will read a Dockerfile from Stdin without context. Due to the lack of a context, no contents of any local directory will be sent to the docker daemon. ADD doesn’t work when running in this mode due to the absence of the context, thus having no source files to copy to the container.
@@ -403,9 +404,120 @@ An example with all parameters and options.
     docker commit -m="My commit message" -author="Joe smith" -run='{"Hostname": "", "User": "","CpuShares": 0,"Memory": 0,"MemorySwap": 0,"PortSpecs": ["22", "80", "443"],"Tty": true,"OpenStdin": true,"StdinOnce": true,"Env": ["FOO=BAR", "FOO2=BAR2"],"Cmd": ["cat", "-e", "/etc/resolv.conf"],"Dns": ["8.8.8.8", "8.8.4.4"]}' a1bcbabsdhb323h2b joesmith/myrepo mytag
 
 
+diff
+---- 
+Inspect changes on a container’s filesystem
+
+Parameters
+~~~~~~~~~~
+- CONTAINER_ID: The ID for the container you want to create a diff for
 
 
+Usage
+~~~~~
+::
 
+    docker diff CONTAINER_ID
+
+Examples
+~~~~~~~~
+::
+
+    docker diff a1bcbabsdhb323h2b
+
+
+export
+------
+Stream the contents of a container as a tar archive
+
+Parameters
+~~~~~~~~~~
+- CONTAINER_ID: The ID for the container you want to export.
+
+Usage
+~~~~~
+::
+
+    docker export CONTAINER_ID
+
+Examples
+~~~~~~~~
+::
+
+    docker export a1bcbabsdhb323h2b > myfile.tar
+
+
+history
+-------
+Show the history of an image
+
+Parameters
+~~~~~~~~~~
+- IMAGE: The name of the image you want to see the history for
+
+Usage
+~~~~~
+::
+
+    docker history IMAGE
+
+Examples
+~~~~~~~~
+::
+
+    docker history joesmith/myimage
+
+
+images
+------
+List the images managed by Docker
+
+Parameters
+~~~~~~~~~~
+- NAME: A filter to limit results to only images matching the NAME
+- OPTIONS:
+    - -a=false: show all images
+    - -q=false: only show numeric IDs
+    - -viz=false: output in graphviz format
+
+Usage
+~~~~~
+::
+
+    docker images [OPTIONS] [NAME]
+
+Examples
+~~~~~~~~
+
+Show images
+^^^^^^^^^^^
+::
+
+    docker images
+
+Show images with name ubuntu
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    docker images ubuntu
+
+Show all images
+^^^^^^^^^^^^^^^
+::
+
+    docker images -a
+
+Show only image ID's
+^^^^^^^^^^^^^^^^^^^^
+::
+
+    docker images -q
+
+Displaying images visually
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    docker images -viz | dot -Tpng -o docker.png
 
 
 
