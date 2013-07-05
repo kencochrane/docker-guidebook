@@ -237,6 +237,16 @@ This tells Docker which Docker index to use. You will most likely not use this s
 
 defaults to DOCKER_INDEX_URL=https://index.docker.io
 
+Example
+~~~~~~~
+This is how you would set it if it was in an init file::
+
+    # /etc/init/docker.conf
+    env LC_ALL="en_US.UTF-8"
+    env DOCKER_INDEX_URL="https://index.docker.io"
+    env DEBUG=1
+    exec /usr/local/bin/docker -d
+
 Logs
 ----
 There is no official Docker log file right now, I have opened an issue and requested one: https://github.com/dotcloud/docker/issues/936 but in the meantime if you are using upstart you can use ``/var/log/upstart/docker.log`` which has some information, but not as much as I would like.
@@ -244,7 +254,6 @@ There is no official Docker log file right now, I have opened an issue and reque
 Testing Docker install
 ======================
 Now that you have Docker running, you can start to issue some Docker commands to see how things are working. The very first commands that I always run are ``Docker version`` and ``Docker info``. These tell me quickly if I have everything working correctly. 
-
 ::
 
     $ docker version
@@ -272,6 +281,51 @@ And replace it by the following one::
 
 Then run ``update-grub``, and reboot the server.
 
+Terminology
+===========
+There are going to be some terms that you hear throughout this tutorial, to make sure you understand what we are talking about, I'll explain a few of them here.
+
+Image
+-----
+An image is a read only layer used to build a container. They do not change.
+
+Container
+---------
+Is basically a self contained runtime environment that is built using one or more images. You can commit your changes to a container and create an image.
+
+index / registry
+----------------
+These are public or private servers where people can upload their repositories so they can easily share what they made.
+
+Repository
+----------
+A repository is a group of images located in the docker registry. There are two types of repositories, Top level and user repositories. Top level repositories don't have a '/' in the name and they are usually reserved for base images. These Top level repositories is what most people build their repositories on top of. They are controlled by the maintainers of Docker. User repositories are repositories that anyone can upload into the registry and share with other people.
+
+Getting Started
+===============
+Now that we have the boring stuff out of the way lets start playing with Docker. The very first example we are going to do is a very simple one, we will spin up a container and print ``hello world`` to the screen.
+::
+
+    #run a simple echo command, that will echo hello world back to the console over standard out.
+    $ docker run base /bin/echo hello world
+    hello world
+
+If this was your first docker command you will notice that it will need to download the base image first. It only needs to do this once, and it caches it locally so you don't need to do this again. We could have broken these out into two commands ``docker pull base`` and then the docker run command, but I was lazy and put them together, and Docker is smart enough to know what I want to do, and do it for me.
+
+Now you might be wondering what is Docker doing here exactly. It doesn't look like much because we picked such a simple example, but here is what is happening.
+
+1. Generated a new LXC container
+2. Created a new file system
+3. Mounted a read/write layer
+4. Allocated network interface
+5. Setup IP
+6. Setup NATing
+7. Executed the process in the container
+8. Captured it's output
+9. Printed to screen
+10. Stopped the container
+
+All in under a second!
 
 Docker Commands
 ===============
@@ -559,8 +613,249 @@ Note the sudo in this example – you must preserve the ownership of the files (
     $ sudo tar -c . | docker import - exampleimagedir
 
 
+info
+----
 
+Parameters
+~~~~~~~~~~
 
+Usage
+~~~~~
+::
 
+Examples
+~~~~~~~~
 
+inspect
+-------
 
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+kill
+----
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+login
+-----
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+logs
+----
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+port
+----
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+ps
+--
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+pull
+----
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+push
+----
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+restart
+-------
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+rm
+--
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+rmi
+---
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+run
+---
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+search
+------
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+start
+-----
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+stop
+----
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+tag
+---
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+version
+-------
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
+
+wait
+----
+
+Parameters
+~~~~~~~~~~
+
+Usage
+~~~~~
+::
+
+Examples
+~~~~~~~~
