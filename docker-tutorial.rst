@@ -258,15 +258,15 @@ Now that you have Docker running, you can start to issue some Docker commands to
     WARNING: No memory limit support
     WARNING: No swap limit support
 
-Notice that I have two warnings for my docker info. If you use Debian or Ubuntu kernels, and want to enable memory and swap accounting, you must add the following command-line parameters to your kernel:
+Notice that I have two warnings for my docker info. If you use Debian or Ubuntu kernels, and want to enable memory and swap accounting, you must add the following command-line parameters to your kernel::
 
     cgroup_enable=memory swapaccount=1
 
-On Debian or Ubuntu systems, if you use the default GRUB bootloader, you can add those parameters by editing ``/etc/default/grub`` and extending GRUB_CMDLINE_LINUX. Look for the following line:
+On Debian or Ubuntu systems, if you use the default GRUB bootloader, you can add those parameters by editing ``/etc/default/grub`` and extending GRUB_CMDLINE_LINUX. Look for the following line::
 
     GRUB_CMDLINE_LINUX=""
 
-And replace it by the following one:
+And replace it by the following one::
 
     GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"
 
@@ -518,6 +518,46 @@ Displaying images visually
 ::
 
     docker images -viz | dot -Tpng -o docker.png
+
+
+import
+------
+Create a new filesystem image from the contents of a tarball
+
+Parameters
+~~~~~~~~~~
+- URL: At this time, the URL must start with http and point to a single file archive (.tar, .tar.gz, .bzip) containing a root filesystem. If you would like to import from a local directory or archive, you can use the - parameter to take the data from standard in.
+- TAG: name of the tag you want to assign repo after import
+- REPOSITORY: the repository to import into.
+
+Usage
+~~~~~
+::
+
+    docker import URL |- [REPOSITORY [TAG]]
+
+Examples
+~~~~~~~~
+
+Import from a remote location
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker import http://example.com/exampleimage.tgz exampleimagerepo
+
+Import from a local file
+^^^^^^^^^^^^^^^^^^^^^^^^
+Import to docker via pipe and standard in::
+
+    $ cat exampleimage.tgz | docker import - exampleimagelocal
+
+Import from a local directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Note the sudo in this example – you must preserve the ownership of the files (especially root ownership) during the archiving with tar. If you are not root (or sudo) when you tar, then the ownerships might not get preserved.
+::
+
+    $ sudo tar -c . | docker import - exampleimagedir
+
 
 
 
