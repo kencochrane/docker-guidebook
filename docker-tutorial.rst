@@ -301,8 +301,8 @@ Repository
 ----------
 A repository is a group of images located in the docker registry. There are two types of repositories, Top level and user repositories. Top level repositories don't have a '/' in the name and they are usually reserved for base images. These Top level repositories is what most people build their repositories on top of. They are controlled by the maintainers of Docker. User repositories are repositories that anyone can upload into the registry and share with other people.
 
-Getting Started
-===============
+Part 1. Getting Started
+=======================
 Now that we have the boring stuff out of the way lets start playing with Docker. The very first example we are going to do is a very simple one, we will spin up a container and print ``hello world`` to the screen.
 ::
 
@@ -326,6 +326,223 @@ Now you might be wondering what is Docker doing here exactly. It doesn't look li
 10. Stopped the container
 
 All in under a second!
+
+If we run the ``docker images`` command we should see the base image in our list.
+::
+
+    $ docker images
+    REPOSITORY          TAG                 ID                  CREATED             SIZE
+    base                latest              b750fe79269d        3 months ago        24.65 kB (virtual 180.1 MB)
+    base                ubuntu-12.10        b750fe79269d        3 months ago        24.65 kB (virtual 180.1 MB)
+    base                ubuntu-quantal      b750fe79269d        3 months ago        24.65 kB (virtual 180.1 MB)
+    base                ubuntu-quantl       b750fe79269d        3 months ago        24.65 kB (virtual 180.1 MB)
+
+Notice how you see the same image more then once, that is because there are more then one tag for the same image.
+
+If we want to see the container we just ran we can run the ``docker ps`` command. Since it isn't running anymore we need to use the ``-a`` flag to show us all of the image::
+
+    $ docker ps -a
+    ID                  IMAGE               COMMAND                CREATED             STATUS              PORTS
+    861361e27501        base:latest         /bin/echo hello world  1 minutes ago       Exit 0
+
+Lets do something a little more complicated. We are going to do the same thing, but instead of having the container exit right after we start, we want it to keep running in the background, and print hello world every second::
+
+    $ CONTAINER_ID=$(docker run -d base /bin/sh -c "while true; do echo hello world; sleep 1; done")
+    $ echo $CONTAINER_ID
+    f684fc88aec3
+    
+    $ docker ps
+    ID                  IMAGE               COMMAND                CREATED             STATUS              PORTS
+    f684fc88aec3        base:latest         /bin/sh -c while tru   33 seconds ago      Up 33 seconds
+
+There we go, now lets see what the container is doing by looking at the logs for the container::
+
+    $ docker logs f684fc88aec3
+    hello world
+    hello world
+    hello world
+    hello world
+    hello world
+    .. (trimmed)
+
+Now lets attach to the container and see the results in realtime::
+
+    $ docker attach f684fc88aec3
+    hello world
+    hello world
+    hello world
+
+Ok, enough fun for this container, lets stop it.
+
+    $ docker stop f684fc88aec3
+    f684fc88aec3
+    
+    $ docker ps
+    ID                  IMAGE               COMMAND             CREATED             STATUS              PORTS
+
+Another thing we could have done to look at the container was inspect the container, we can do this while it is running or after it stopped::
+
+    $ docker inspect f684fc88aec3
+    [{
+        "ID": "f684fc88aec3bf5b74df2fe03da1fe7cebf07a89d308b6ac7e8a6f14d9c9a3dd",
+        "Created": "2013-07-05T21:23:31.27766521Z",
+        "Path": "/bin/sh",
+        "Args": [
+            "-c",
+            "while true; do echo hello world; sleep 1; done"
+        ],
+        "Config": {
+            "Hostname": "f684fc88aec3",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "PortSpecs": null,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": null,
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "while true; do echo hello world; sleep 1; done"
+            ],
+            "Dns": null,
+            "Image": "base",
+            "Volumes": {},
+            "VolumesFrom": "",
+            "Entrypoint": []
+        },
+        "State": {
+            "Running": false,
+            "Pid": 0,
+            "ExitCode": 137,
+            "StartedAt": "2013-07-05T21:23:31.298200635Z",
+            "Ghost": false
+        },
+        "Image": "b750fe79269d2ec9a3c593ef05b4332b1d1a02a62b4accb2c21d589ff2f5f2dc",
+        "NetworkSettings": {
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "Gateway": "",
+            "Bridge": "",
+            "PortMapping": null
+        },
+        "SysInitPath": "/usr/bin/docker",
+        "ResolvConfPath": "/etc/resolv.conf",
+        "Volumes": {},
+        "VolumesRW": {}
+    }]
+
+There is a lot of information there, you might not need it now, but you may need it in the future, so it is nice to have it available. 
+
+Now that you know the basics go to part 2, and learn how to build an image.
+
+Part 2. Building an image
+=========================
+
+Our goal for this part is to create our own Redis server container. The first thing we will need to do is decide which base image we want to build on. I usually pick the base image, but sometimes it is nice to start from something a little higher so that I don't have to recreate steps, and I can build on the shoulders of others.
+
+We are going to run /bin/bash with the ``-i`` and the ``-t`` flags. ``-i`` tells Docker to keep stdin open even if not attached, and ``-t`` is to allocate a pseudo-tty. Once we run the command, we will be connected into the container, and all commands at this point are running from inside the container.
+::
+
+    $ docker run -i -t base /bin/bash
+    root@dda8bfc22397:/# hostname
+    dda8bfc22397
+    root@dda8bfc22397:/# ps aux
+    USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+    root         1  0.0  0.0  18060  1940 ?        S    21:40   0:00 /bin/bash
+    root        11  0.0  0.0  15532  1136 ?        R+   21:41   0:00 ps aux
+
+OK, it looks like we are in, and things are working well, now lets get to work.
+
+We are going to update apt and then install redis::
+
+    $ apt-get update
+    $ apt-get install redis-server
+    $ps aux
+    USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+    root         1  0.0  0.0  18060  1944 ?        S    22:21   0:00 /bin/bash
+    redis      116  0.0  0.0  36628  1656 ?        Ssl  22:22   0:00 /usr/bin/redis-server /etc/redis/redis.conf
+    root       125  0.0  0.0  15532  1140 ?        R+   22:23   0:00 ps aux
+    $ exit
+
+Now we have a container with redis installed. Less see what we did to the container::
+
+    $ docker diff dda8bfc22397
+    A /.bash_history
+    C /dev
+    A /dev/kmsg
+    C /etc
+    C /etc/bash_completion.d
+    A /etc/bash_completion.d/redis-cli
+    C /etc/default
+    A /etc/default/redis-server
+    .. (trimmed)
+
+It should show you what files have changed (C) and which ones were added (A). Lets save our work so we can reuse this in the future. To do this we need to ``docker commit`` the container to create an image. In order to commit changes you need your container_id. If you don't remember it don'tw worry you can get it from ``docker ps -a``::
+
+    $ docker ps -a  # grab the container id (this will be the first one in the list)
+    $ docker commit <container_id> <your username>/redis
+    82ebf04d9385
+    
+It returns an image id. if we run ``docker images`` we should see it listed::
+
+    $ docker images
+    REPOSITORY          TAG                 ID                  CREATED              SIZE
+    base                latest              b750fe79269d        3 months ago         24.65 kB (virtual 180.1 MB)
+    base                ubuntu-12.10        b750fe79269d        3 months ago         24.65 kB (virtual 180.1 MB)
+    base                ubuntu-quantal      b750fe79269d        3 months ago         24.65 kB (virtual 180.1 MB)
+    base                ubuntu-quantl       b750fe79269d        3 months ago         24.65 kB (virtual 180.1 MB)
+    kencochrane/redis   latest              82ebf04d9385        About a minute ago   98.46 MB (virtual 278.6 MB)
+
+
+Lets run our new image and see if it works::
+
+    $ docker run -d -p 6379 kencochrane/redis /usr/bin/redis-server
+    4cbaae2f67d0
+
+The ``-d`` tell docker to run it in the background, just like our Hello World daemon from the last part. ``-p 6379`` says to use 6379 as the port for this container.
+
+Test 1
+Connect to the container with the redis-cli.
+::
+
+    $ docker ps  # grab the new container id
+    $ docker inspect <container_id> | grep IPAddress   # grab the ipaddress of the container
+    "IPAddress": "172.16.42.5",
+    redis-cli -h 172.16.42.5 -p 6379
+    redis 10.0.3.32:6379> set docker awesome
+    OK
+    redis 10.0.3.32:6379> get docker
+    "awesome"
+    redis 10.0.3.32:6379> exit
+
+
+Connect to the public IP with the redis-cli.
+:: 
+
+    $ docker ps  # grab the new container id
+    $ docker port <container_id> 6379  # grab the external port
+    49153
+    ip addr show   # grab the host ip address
+    redis-cli -h <host ipaddress> -p 49153
+    redis 192.168.0.1:49153> set docker awesome
+    OK
+    redis 192.168.0.1:49153> get docker
+    "awesome"
+    redis 192.168.0.1:49153> exit
+
+
+We just proved that it is working as it should, we can now stop the container using ``docker stop``.
+
+#TODO
+- login to index
+- push image to registry
+
 
 Docker Commands
 ===============
