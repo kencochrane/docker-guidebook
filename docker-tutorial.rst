@@ -162,11 +162,10 @@ Here is what you need to do to get it up and running on Ubuntu::
     go get -v github.com/dotcloud/docker/...
     go install -v github.com/dotcloud/docker/...
 
-Then run the docker daemon,
+Then run the docker daemon::
 
-::
     sudo $GOPATH/bin/docker -d
-    
+
 If you make any changes to the code, run the ``go install`` command (above) to recompile docker. Feel free to change the git clone command above to your own fork, to make pull request's easier.
 
 Docker requires Go 1.1, if you have an older version it will not compile correctly.
@@ -242,9 +241,166 @@ Logs
 ----
 There is no official Docker log file right now, I have opened an issue and requested one: https://github.com/dotcloud/docker/issues/936 but in the meantime if you are using upstart you can use ``/var/log/upstart/docker.log`` which has some information, but not as much as I would like.
 
+Testing Docker install
+======================
+Now that you have Docker running, you can start to issue some Docker commands to see how things are working. The very first commands that I always run are ``Docker version`` and ``Docker info``. These tell me quickly if I have everything working correctly. 
+
+::
+
+    $ docker version
+    Client version: 0.4.8
+    Server version: 0.4.8
+    Go version: go1.1
+
+    $ docker info
+    Containers: 0
+    Images: 0
+    WARNING: No memory limit support
+    WARNING: No swap limit support
+
+Notice that I have two warnings for my docker info. If you use Debian or Ubuntu kernels, and want to enable memory and swap accounting, you must add the following command-line parameters to your kernel:
+
+    cgroup_enable=memory swapaccount=1
+
+On Debian or Ubuntu systems, if you use the default GRUB bootloader, you can add those parameters by editing ``/etc/default/grub`` and extending GRUB_CMDLINE_LINUX. Look for the following line:
+
+    GRUB_CMDLINE_LINUX=""
+
+And replace it by the following one:
+
+    GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"
+
+Then run ``update-grub``, and reboot the server.
 
 
+Docker Commands
+===============
+Here is a list of all of the current Docker commands, the different parameters they might have, as well as an example or two on how to use them.
 
+attach
+------
+Attach to a running container.
+
+Parameters
+~~~~~~~~~~
+- container_id: The ID for the container you want to attach too.
+
+Usage
+~~~~~
+::
+
+    docker attach <container_id>
+
+Example
+~~~~~~~
+::
+
+    docker attach afs232ybh2123d
+
+build
+-----
+Build a container from a Dockerfile
+
+Parameters
+~~~~~~~~~~
+- PATH: Build a new container image from the source code at PATH
+- URL: When a single Dockerfile is given as URL, then no context is set. When a git repository is set as URL, the repository is used as context
+- OPTIONS:
+    - -t="" : Tag to be applied to the resulting image in case of success.
+
+Usage
+~~~~~
+::
+
+    docker build [OPTIONS] PATH | URL | -
+
+Examples
+~~~~~~~~
+
+Read the Dockerfile from the current directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    docker build .
+
+This will read the Dockerfile from the current directory. It will also send any other files and directories found in the current directory to the docker daemon. The contents of this directory would be used by ADD commands found within the Dockerfile.
+This will send a lot of data to the docker daemon if the current directory contains a lot of data.
+If the absolute path is provided instead of ‘.’, only the files and directories required by the ADD commands from the Dockerfile will be added to the context and transferred to the docker daemon.
+
+Read a Dockerfile from standard in (stdin) without context
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+    docker build - < Dockerfile
+    
+This will read a Dockerfile from Stdin without context. Due to the lack of a context, no contents of any local directory will be sent to the docker daemon. ADD doesn’t work when running in this mode due to the absence of the context, thus having no source files to copy to the container.
+
+
+Build from a git repo
+^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    docker build github.com/creack/docker-firefox
+
+This will clone the github repository and use it as context. The Dockerfile at the root of the repository is used as Dockerfile.
+Note that you can specify an arbitrary git repository by using the ‘git://’ schema.
+
+
+commit
+------
+Save your containers state to a container image, so the state can be re-used.
+
+When you commit your container only the differences between the image the container was created from and the current state of the container will be stored (as a diff). See which images you already have using docker images
+
+In order to commit to the repository it is required to have committed your container to an image with your namespace.
+
+Parameters
+~~~~~~~~~~
+- CONTAINER_ID: The container ID for the container you want to commit
+- REPOSITORY: The name for your image that you will save to the repository <your username>/<image name>
+- TAG: The tag you want to give to the commit.
+- OPTIONS:
+    - -m="": Commit message
+    - -author="": Author (eg. "John Hannibal Smith <hannibal@a-team.com>"
+    - -run="": Config automatically applied when the image is run. "+`(ex: {"Cmd": ["cat", "/world"], "PortSpecs": ["22"]}')
+
+Usage
+~~~~~
+::
+
+    docker commit [OPTIONS] CONTAINER_ID [REPOSITORY [TAG]]
+
+Examples
+~~~~~~~~
+
+
+basic commit
+^^^^^^^^^^^^
+This will commit a container with a message and author.
+::
+
+    docker commit -m="My commit message" -author="Joe smith" a1bcbabsdhb323h2b
+
+commit with repository
+^^^^^^^^^^^^^^^^^^^^^^
+Same as basic commit, but with a repository name
+::
+
+    docker commit -m="My commit message" -author="Joe smith" a1bcbabsdhb323h2b joesmith/myrepo
+
+commit with tag
+^^^^^^^^^^^^^^^
+Same as basic commit, but with a repository name and tag
+::
+
+    docker commit -m="My commit message" -author="Joe smith" a1bcbabsdhb323h2b joesmith/myrepo mytag
+
+
+Full example
+^^^^^^^^^^^^
+An example with all parameters and options.
+::
+
+    docker commit -m="My commit message" -author="Joe smith" -run='{"Hostname": "", "User": "","CpuShares": 0,"Memory": 0,"MemorySwap": 0,"PortSpecs": ["22", "80", "443"],"Tty": true,"OpenStdin": true,"StdinOnce": true,"Env": ["FOO=BAR", "FOO2=BAR2"],"Cmd": ["cat", "-e", "/etc/resolv.conf"],"Dns": ["8.8.8.8", "8.8.4.4"]}' a1bcbabsdhb323h2b joesmith/myrepo mytag
 
 
 
