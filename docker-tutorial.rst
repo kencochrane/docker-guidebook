@@ -216,16 +216,26 @@ You can use multiple -H, for example, if you want to listen on both tcp and a un
 
 Configuration
 -------------
-Currently if you want to configure the docker daemon, you can either pass in command switches to the docker daemon on startup, or you can set ENV variables 
+Currently if you want to configure the docker daemon, you can either pass in command switches to the docker daemon on startup, or you can set ENV variables that the docker daemon will pick up. I have proposed a better approach for configuring docker, the idea is to use a ``docker.conf`` file so that it is easier to set and is more obvious. Details can be found here: https://github.com/dotcloud/docker/issues/937
 
-https://github.com/dotcloud/docker/issues/937
+There are two ENV variables that you can set today, there maybe more added in the future.
 
 DEBUG
+~~~~~
+This tells the Docker daemon that you want more debug information in your logs. 
+
+defaults to DEBUG=0, set to DEBUG=1 to enable.
 
 DOCKER_INDEX_URL
+~~~~~~~~~~~~~~~~
+This tells Docker which Docker index to use. You will most likely not use this setting, it is mostly used for Docker developer when they want to try things out with the test index before they release the code. 
+
+defaults to DOCKER_INDEX_URL=https://index.docker.io
 
 Logs
 ----
+There is no official Docker log file right now, I have opened an issue and requested one: https://github.com/dotcloud/docker/issues/936 but in the meantime if you are using upstart you can use ``/var/log/upstart/docker.log`` which has some information, but not as much as I would like.
+
 
 
 
