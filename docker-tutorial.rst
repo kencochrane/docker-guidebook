@@ -532,7 +532,7 @@ Creating an Account on the Docker Index
 There are two ways to create an account on the Docker Index. Either way requires that you enter a valid email address and that the email address is confirmed before you can activate the account. So make sure you enter a valid email address, and then check you email after registering so that you can click the confirmation link and confirm the account.
 
 Command Line
-^^^^^^^^^^^^
+~~~~~~~~~~~~
 If you want to register for an account from the command line you can use the ``docker login`` command. The Docker login command will either register an account for you, or if you already have an account it will log you into the Index.
 
 When you register via the command line, it will register you and login you in a the same time. Remember to click on the activation link in the confirmation email, or else your account isn't fully active.
@@ -545,7 +545,7 @@ When you register via the command line, it will register you and login you in a 
     Login Succeeded
 
 Web site
-^^^^^^^^
+~~~~~~~~
 If you prefer to register from a web browser, then go to https://index.docker.io/account/signup/ and then fill out the form, and then click on the activation link sent in the confirmation email.
 
 Once you are activated, you will still need to login to the Docker Index from your Docker client on your server, so that you can link the two.
@@ -558,7 +558,7 @@ Once you are activated, you will still need to login to the Docker Index from yo
     Login Succeeded
 
 Credentials
-^^^^^^^^^^^
+~~~~~~~~~~~
 When you login to the Docker Index from the Docker client, it will store your login information, so you don't have to enter it again. Depending on what Docker client version you are using it will either be located at ``~/.dockercfg`` or ``/var/lib/docker/.dockercfg``. If you are having issues logging in you, can delete this file, and it will re-prompt you for your username and password the next time you login. Running Docker login should do the same thing, so do that first, and use this for a last resort.
 
 
@@ -597,8 +597,8 @@ Let's push the repository that we created in the last part, so that others can u
 Now that it is up on the registry we can use it on any Docker host, and we just need to do a ``Docker pull`` to get it on the host, and I'll know it is going to be the same every time.
 
 
-Repository Metadata
--------------------
+Repository Description
+----------------------
 If you want to add a description to your repository so that it lets people know what it does, you can login to the website and edit the description there. There are two descriptions, a short one, which is what shows up in search results, and is plain text. There is also a full description which allows MarkDown and is used to give more detailed information. 
 
 Deleting a Repository
@@ -923,7 +923,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -936,7 +936,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -949,7 +949,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -962,7 +962,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -975,7 +975,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -988,7 +988,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1001,7 +1001,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1014,7 +1014,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1027,7 +1027,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1040,7 +1040,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1053,7 +1053,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1066,7 +1066,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1079,7 +1079,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1092,7 +1092,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1105,7 +1105,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1118,7 +1118,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1131,7 +1131,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1144,7 +1144,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
@@ -1157,7 +1157,7 @@ Parameters
 
 Usage
 ~~~~~
-::
+
 
 Examples
 ~~~~~~~~
