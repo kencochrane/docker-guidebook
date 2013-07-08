@@ -8,29 +8,8 @@
 TODO:
 Topics
 
-- intro
-- what is docker
-- installation
-    - requirements
-        - kernel
-        - LXC
-        - aufs
-    - server
-    - developer setup
-- docker daemon and config options
-    - log file
-    - config file
 - commands
     - list all of them with explanation of all switches and examples on how to use each
-- registry / index
-    - index
-        - create an account
-            - web or command line
-        - delete repo
-        - change description
-    - public
-    - private
-    - search
 - remote api
     - libraries
     - web ui's
@@ -38,11 +17,11 @@ Topics
     - how to
     - examples
 - using external mounts (not finished yet)
-- creating images, pushing and pulling.
+- setting up your own private registry
 - docker run
     - limiting memory, cpu
     - detached vs attached
-    - volume mounting
+    - volume/bind mounting
 
 .. image:: docker_logo.png
 
@@ -537,11 +516,117 @@ Connect to the public IP with the redis-cli.
     redis 192.168.0.1:49153> exit
 
 
-We just proved that it is working as it should, we can now stop the container using ``docker stop``.
+We just proved that it is working as it should, we can now stop the container using ``docker stop``. You have now created your first Docker image. Continue on to the next part to learn how to use that image on another host, and share it with the world.
 
-#TODO
-- login to index
-- push image to registry
+Part 3: Docker Index/registry
+=============================
+When you create an image it is only available on that server. In the past, if you wanted to use the same image on another server, you would need to recreate the image, which isn't ideal because there is no way to guarantee that the two images are the same. To make moving images around, and sharing them easier, the Docker team created the `Docker index <https://index.docker.io>`_.
+
+The Docker Index is a public Registry where people can upload their custom images and share them with others. This is also where the base images are located and where you pull from when doing a ``docker pull``. There are two parts to the Docker Index. There is a web component that makes it easier for you to mange your images and account with a graphical interface. There is also the API which is what the Docker client uses to interact with the index. This allows you to do some of the tasks from the command line or the web UI.
+
+The Docker Registry is server that stores all of the images and repositories. The Index just has the metadata about the images, repositories and the user accounts, but all of the images and repositories are stored in the Docker Registry.
+
+
+Creating an Account on the Docker Index
+---------------------------------------
+There are two ways to create an account on the Docker Index. Either way requires that you enter a valid email address and that the email address is confirmed before you can activate the account. So make sure you enter a valid email address, and then check you email after registering so that you can click the confirmation link and confirm the account.
+
+Command Line
+^^^^^^^^^^^^
+If you want to register for an account from the command line you can use the ``docker login`` command. The Docker login command will either register an account for you, or if you already have an account it will log you into the Index.
+
+When you register via the command line, it will register you and login you in a the same time. Remember to click on the activation link in the confirmation email, or else your account isn't fully active.
+::
+
+    $ docker login
+    Username (): myusername
+    Password:
+    Email (): myusername@example.com
+    Login Succeeded
+
+Web site
+^^^^^^^^
+If you prefer to register from a web browser, then go to https://index.docker.io/account/signup/ and then fill out the form, and then click on the activation link sent in the confirmation email.
+
+Once you are activated, you will still need to login to the Docker Index from your Docker client on your server, so that you can link the two.
+::
+
+    $ docker login
+    Username (): myusername
+    Password:
+    Email (): myusername@example.com
+    Login Succeeded
+
+Credentials
+^^^^^^^^^^^
+When you login to the Docker Index from the Docker client, it will store your login information, so you don't have to enter it again. Depending on what Docker client version you are using it will either be located at ``~/.dockercfg`` or ``/var/lib/docker/.dockercfg``. If you are having issues logging in you, can delete this file, and it will re-prompt you for your username and password the next time you login. Running Docker login should do the same thing, so do that first, and use this for a last resort.
+
+
+Search
+------
+There are a lot of Docker images in the Index, with more getting added everyday. Before you go ahead and create your own, you should see if someone has already created what you wanted. The best way to find images is via the ``docker search`` command on the command line, or via the Docker Index website.
+:: 
+
+    $ docker search memcache
+    Found 5 results matching your query ("memcache")
+    NAME                     DESCRIPTION
+    ehazlett/memcached       Memcached 1.4.15.  Specify the following e...
+    jbarbier/memcached       memcached
+    checkraiser/memcached
+    arcus/memcached
+    bacongobbler/memcached
+
+Pulling
+-------
+When you found an image that you want to pull down and try out, you would use the ``docker pull`` command. It will then connect to the Docker Index find the repository that you want, and it will let the Docker client know where in the Docker Registry it can download it.
+::
+
+    $ docker pull jbarbier/memcached
+
+Pushing
+-------
+If you have a repository that you want to share with someone then you would need to push it into the Docker Index/Registry using the ``docker push`` command.  When you do a push, it will contact the Docker Index, and make sure you are logged in, have permission to push, and that the same repository doesn't already exist. If everything looks good, it will then return a special authorization token that the Docker client will use when push up the repository to the Docker Registry. 
+
+Since the Docker Register doesn't have any concept of authorization, or user accounts, it relies on Authorization tokens to manage permissions. The nice thing about this, is that Docker hides this all from you, and you don't even need to worry about it, it will just work assuming you have permission to push.
+
+Let's push the repository that we created in the last part, so that others can use it.
+::
+
+    $ docker push kencochrane/redis
+
+Now that it is up on the registry we can use it on any Docker host, and we just need to do a ``Docker pull`` to get it on the host, and I'll know it is going to be the same every time.
+
+
+Repository Metadata
+-------------------
+If you want to add a description to your repository so that it lets people know what it does, you can login to the website and edit the description there. There are two descriptions, a short one, which is what shows up in search results, and is plain text. There is also a full description which allows MarkDown and is used to give more detailed information. 
+
+Deleting a Repository
+---------------------
+If you made a mistake and need to delete a repository, you can do this by logging into the Docker Index website, and clicking on the repository settings and clicking the delete button. Make sure this is what you want to do, because there is no turning back once you do this.
+
+
+Part 4: Docker Buildfiles
+=========================
+Goes over what a Docker Buildfile is, and how to make their own.
+
+Part 5: Advanced Usage
+======================
+- docker run
+    - limiting memory, cpu
+    - detached vs attached
+    - volume/bind mounting
+
+Part 6: Using a Private Registry
+================================
+- setting up your own private registry
+
+
+Part 7: Automating Docker
+=========================
+- Remote API
+- web ui's
+- list of libraries
 
 
 Docker Commands
