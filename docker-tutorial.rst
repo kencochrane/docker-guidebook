@@ -917,29 +917,474 @@ Note the sudo in this example – you must preserve the ownership of the files (
 
 info
 ----
+Display system-wide information.
 
 Parameters
 ~~~~~~~~~~
+None
 
 Usage
 ~~~~~
+::
 
+    $ docker info
 
 Examples
 ~~~~~~~~
+::
+
+    $ docker info
+    Containers: 30
+    Images: 25
+    Debug mode (server): true
+    Debug mode (client): false
+    Fds: 8
+    Goroutines: 10
+
 
 inspect
 -------
+Return low-level information on a container/image. The command will take 1 or more container or image ids and return all of the information relating to those ids.
 
 Parameters
 ~~~~~~~~~~
+- CONTAINER: The ID for the container you want to export.
+- IMAGE: The image name for the images you want information for.
 
 Usage
 ~~~~~
+::
 
+    $ docker inspect CONTAINER|IMAGE [CONTAINER|IMAGE...]
 
 Examples
 ~~~~~~~~
+
+Container inspect
+^^^^^^^^^^^^^^^^^
+Inspect one container
+::
+    
+    $ docker inspect a5e78640ece4
+    [{
+        "ID": "a5e78640ece4b64657b86780ebfeacf614c402cf3b30bb2226f9f8abd48a46ff",
+        "Created": "2013-07-05T22:43:36.281232878Z",
+        "Path": "sh",
+        "Args": [],
+        "Config": {
+            "Hostname": "a5e78640ece4",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": true,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "PortSpecs": null,
+            "Tty": true,
+            "OpenStdin": true,
+            "StdinOnce": true,
+            "Env": null,
+            "Cmd": [
+                "sh"
+            ],
+            "Dns": null,
+            "Image": "joffrey/busybox",
+            "Volumes": {},
+            "VolumesFrom": "",
+            "Entrypoint": []
+        },
+        "State": {
+            "Running": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "StartedAt": "2013-07-05T22:43:36.286163881Z",
+            "Ghost": false
+        },
+        "Image": "e74096c5172b34732c9769db5f23805cf786dffe25f25da66ebf7c0fc30d0e0b",
+        "NetworkSettings": {
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "Gateway": "",
+            "Bridge": "",
+            "PortMapping": null
+        },
+        "SysInitPath": "/usr/bin/docker",
+        "ResolvConfPath": "/etc/resolv.conf",
+        "Volumes": {},
+        "VolumesRW": {}
+    }]
+
+
+Inspect more then one container
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Inspect 2 containers
+::
+
+    $ docker inspect a5e78640ece4 0775b219a48a
+    [{
+        "ID": "a5e78640ece4b64657b86780ebfeacf614c402cf3b30bb2226f9f8abd48a46ff",
+        "Created": "2013-07-05T22:43:36.281232878Z",
+        "Path": "sh",
+        "Args": [],
+        "Config": {
+            "Hostname": "a5e78640ece4",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": true,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "PortSpecs": null,
+            "Tty": true,
+            "OpenStdin": true,
+            "StdinOnce": true,
+            "Env": null,
+            "Cmd": [
+                "sh"
+            ],
+            "Dns": null,
+            "Image": "joffrey/busybox",
+            "Volumes": {},
+            "VolumesFrom": "",
+            "Entrypoint": []
+        },
+        "State": {
+            "Running": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "StartedAt": "2013-07-05T22:43:36.286163881Z",
+            "Ghost": false
+        },
+        "Image": "e74096c5172b34732c9769db5f23805cf786dffe25f25da66ebf7c0fc30d0e0b",
+        "NetworkSettings": {
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "Gateway": "",
+            "Bridge": "",
+            "PortMapping": null
+        },
+        "SysInitPath": "/usr/bin/docker",
+        "ResolvConfPath": "/etc/resolv.conf",
+        "Volumes": {},
+        "VolumesRW": {}
+    },{
+        "ID": "0775b219a48ab9bbebe841a0388f9909e996140f941585e318dbe64289392534",
+        "Created": "2013-07-05T22:40:47.219244957Z",
+        "Path": "sh",
+        "Args": [],
+        "Config": {
+            "Hostname": "0775b219a48a",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": true,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "PortSpecs": null,
+            "Tty": true,
+            "OpenStdin": true,
+            "StdinOnce": true,
+            "Env": null,
+            "Cmd": [
+                "sh"
+            ],
+            "Dns": null,
+            "Image": "joffrey/busybox",
+            "Volumes": {},
+            "VolumesFrom": "",
+            "Entrypoint": []
+        },
+        "State": {
+            "Running": false,
+            "Pid": 0,
+            "ExitCode": 127,
+            "StartedAt": "2013-07-05T22:40:47.224570459Z",
+            "Ghost": false
+        },
+        "Image": "e74096c5172b34732c9769db5f23805cf786dffe25f25da66ebf7c0fc30d0e0b",
+        "NetworkSettings": {
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "Gateway": "",
+            "Bridge": "",
+            "PortMapping": null
+        },
+        "SysInitPath": "/usr/bin/docker",
+        "ResolvConfPath": "/etc/resolv.conf",
+        "Volumes": {},
+        "VolumesRW": {}
+    }]
+
+
+Image inspect
+^^^^^^^^^^^^^
+Inspect an Image::
+
+    $ docker inspect bced7ad27b98
+    [{
+        "id": "bced7ad27b98ea990fae3a7479632419109c7a14412365af379a26393ca0492b",
+        "parent": "c7fe644d47bc05b6990fafec2f4b61fa0c9f7b248af6e754cbcd9c9507af36b1",
+        "created": "2013-06-28T16:45:01.056208611Z",
+        "container": "2deff3a37f8b5e1ce6e23ce420be07609df3813429909e2cfe5426c46f0a9552",
+        "container_config": {
+            "Hostname": "2deff3a37f8b",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "PortSpecs": null,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": null,
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "apt-get install -y curl"
+            ],
+            "Dns": null,
+            "Image": "c7fe644d47bc",
+            "Volumes": null,
+            "VolumesFrom": "",
+            "Entrypoint": null
+        },
+        "docker_version": "0.4.6",
+        "author": "Ken \"ken@example.com\"",
+        "config": {
+            "Hostname": "",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "PortSpecs": null,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": null,
+            "Cmd": null,
+            "Dns": null,
+            "Image": "",
+            "Volumes": null,
+            "VolumesFrom": "",
+            "Entrypoint": null
+        },
+        "architecture": "x86_64",
+        "Size": 4096
+    }]
+
+
+Multiple Image inspect
+^^^^^^^^^^^^^^^^^^^^^^
+Inspect more then one image at a time::
+
+    $  docker inspect bced7ad27b98 e74096c5172b
+    [{
+        "id": "bced7ad27b98ea990fae3a7479632419109c7a14412365af379a26393ca0492b",
+        "parent": "c7fe644d47bc05b6990fafec2f4b61fa0c9f7b248af6e754cbcd9c9507af36b1",
+        "created": "2013-06-28T16:45:01.056208611Z",
+        "container": "2deff3a37f8b5e1ce6e23ce420be07609df3813429909e2cfe5426c46f0a9552",
+        "container_config": {
+            "Hostname": "2deff3a37f8b",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "PortSpecs": null,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": null,
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "apt-get install -y curl"
+            ],
+            "Dns": null,
+            "Image": "c7fe644d47bc",
+            "Volumes": null,
+            "VolumesFrom": "",
+            "Entrypoint": null
+        },
+        "docker_version": "0.4.6",
+        "author": "Ken \"ken@example.com\"",
+        "config": {
+            "Hostname": "",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "PortSpecs": null,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": null,
+            "Cmd": null,
+            "Dns": null,
+            "Image": "",
+            "Volumes": null,
+            "VolumesFrom": "",
+            "Entrypoint": null
+        },
+        "architecture": "x86_64",
+        "Size": 4096
+    },{
+        "id": "e74096c5172b34732c9769db5f23805cf786dffe25f25da66ebf7c0fc30d0e0b",
+        "parent": "e9aa60c60128cad1",
+        "created": "2013-05-09T09:45:26.287021-07:00",
+        "container": "73f9f76d46cc07b3a6aa4e96c85dbabbfc4d1345697f263d5cd1741b5b05d6f2",
+        "container_config": {
+            "Hostname": "73f9f76d46cc",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "PortSpecs": null,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": null,
+            "Cmd": [
+                "ls"
+            ],
+            "Dns": null,
+            "Image": "busybox",
+            "Volumes": {},
+            "VolumesFrom": "",
+            "Entrypoint": null
+        },
+        "docker_version": "0.3.0",
+        "Size": 16391
+    }]
+
+
+Container and Image inspect
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Inspect a container and an image at the same time::
+
+    $ docker inspect bced7ad27b98 a5e78640ece4
+    [{
+        "id": "bced7ad27b98ea990fae3a7479632419109c7a14412365af379a26393ca0492b",
+        "parent": "c7fe644d47bc05b6990fafec2f4b61fa0c9f7b248af6e754cbcd9c9507af36b1",
+        "created": "2013-06-28T16:45:01.056208611Z",
+        "container": "2deff3a37f8b5e1ce6e23ce420be07609df3813429909e2cfe5426c46f0a9552",
+        "container_config": {
+            "Hostname": "2deff3a37f8b",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "PortSpecs": null,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": null,
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "apt-get install -y curl"
+            ],
+            "Dns": null,
+            "Image": "c7fe644d47bc",
+            "Volumes": null,
+            "VolumesFrom": "",
+            "Entrypoint": null
+        },
+        "docker_version": "0.4.6",
+        "author": "Ken \"ken@dotcloud.com\"",
+        "config": {
+            "Hostname": "",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "PortSpecs": null,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": null,
+            "Cmd": null,
+            "Dns": null,
+            "Image": "",
+            "Volumes": null,
+            "VolumesFrom": "",
+            "Entrypoint": null
+        },
+        "architecture": "x86_64",
+        "Size": 4096
+    },{
+        "ID": "a5e78640ece4b64657b86780ebfeacf614c402cf3b30bb2226f9f8abd48a46ff",
+        "Created": "2013-07-05T22:43:36.281232878Z",
+        "Path": "sh",
+        "Args": [],
+        "Config": {
+            "Hostname": "a5e78640ece4",
+            "User": "",
+            "Memory": 0,
+            "MemorySwap": 0,
+            "CpuShares": 0,
+            "AttachStdin": true,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "PortSpecs": null,
+            "Tty": true,
+            "OpenStdin": true,
+            "StdinOnce": true,
+            "Env": null,
+            "Cmd": [
+                "sh"
+            ],
+            "Dns": null,
+            "Image": "joffrey/busybox",
+            "Volumes": {},
+            "VolumesFrom": "",
+            "Entrypoint": []
+        },
+        "State": {
+            "Running": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "StartedAt": "2013-07-05T22:43:36.286163881Z",
+            "Ghost": false
+        },
+        "Image": "e74096c5172b34732c9769db5f23805cf786dffe25f25da66ebf7c0fc30d0e0b",
+        "NetworkSettings": {
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "Gateway": "",
+            "Bridge": "",
+            "PortMapping": null
+        },
+        "SysInitPath": "/usr/bin/docker",
+        "ResolvConfPath": "/etc/resolv.conf",
+        "Volumes": {},
+        "VolumesRW": {}
+    }]
+
+
 
 kill
 ----
