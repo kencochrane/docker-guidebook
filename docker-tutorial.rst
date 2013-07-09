@@ -1388,16 +1388,35 @@ Inspect a container and an image at the same time::
 
 kill
 ----
+Kill a running container(s). If the container won't stop, you can brute force it with the kill command.
 
 Parameters
 ~~~~~~~~~~
+- CONTAINER: The container id for the container you want to kill, can be one or a list separated by spaces.
 
 Usage
 ~~~~~
+::
 
+    $ docker kill CONTAINER [CONTAINER...]
 
 Examples
 ~~~~~~~~
+
+Kill one container
+^^^^^^^^^^^^^^^^^^
+::
+    
+    $ docker kill a5e78640ece4
+    a5e78640ece4
+
+Kill more then one container
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+    
+    $ docker kill a5e78640ece4 0775b219a48a
+    a5e78640ece4
+    0775b219a48a
 
 login
 -----
