@@ -1445,16 +1445,28 @@ Examples
 
 logs
 ----
+Fetch the logs of a container
 
 Parameters
 ~~~~~~~~~~
+- CONTAINER: The Container ID for the Container you want to get the logs for.
 
 Usage
 ~~~~~
+::
 
+    $ docker logs CONTAINER
 
 Examples
 ~~~~~~~~
+::
+
+    $ docker logs a5e78640ece4
+    some logs from my container
+    some logs from my container
+    some logs from my container
+    ...
+
 
 port
 ----
