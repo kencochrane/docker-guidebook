@@ -1384,8 +1384,6 @@ Inspect a container and an image at the same time::
         "VolumesRW": {}
     }]
 
-
-
 kill
 ----
 Kill a running container(s). If the container won't stop, you can brute force it with the kill command.
@@ -1441,7 +1439,6 @@ Examples
     Password:
     Email (): myusername@example.com
     Login Succeeded
-
 
 logs
 ----
