@@ -1420,16 +1420,28 @@ Kill more then one container
 
 login
 -----
+Register or Login to the docker registry server. If you have an account it will log you in, and cache the credentials, if you don't  have an account it will create one for you, and automatically log you in.
 
 Parameters
 ~~~~~~~~~~
+None
 
 Usage
 ~~~~~
+::
 
+    $ docker login
 
 Examples
 ~~~~~~~~
+::
+
+    $ docker login
+    Username (): myusername
+    Password:
+    Email (): myusername@example.com
+    Login Succeeded
+
 
 logs
 ----
