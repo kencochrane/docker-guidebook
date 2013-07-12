@@ -618,26 +618,57 @@ If you made a mistake and need to delete a repository, you can do this by loggin
 
 Part 4: Docker Buildfiles
 =========================
-Goes over what a Docker Buildfile is, and how to make their own.
+TODO:
+Go over what a Docker Buildfile is, and how to make their own. With examples.
 
 Part 5: Advanced Usage
 ======================
+TODO:
 - docker run
     - limiting memory, cpu
     - detached vs attached
     - volume/bind mounting
+- More?
 
 Part 6: Using a Private Registry
 ================================
+TODO:
 - setting up your own private registry
 
 
 Part 7: Automating Docker
 =========================
-- Remote API
-- web ui's
-- list of libraries
+Running docker commands on the command line are a good way to start, but if you need to automate what you are doing, it isn't ideal. To make this better Docker provides a REST based remote API. The remote API allows you to do everything that the command line does. In fact the command line is just a client for the REST API. 
 
+Remote API
+-----------
+Docker provides a remote API for the docker daemon so that you can control it programmatically, for documentation on how it works check out the `Docker Remote API Docs <http://docs.docker.io/en/latest/api/docker_remote_api/>`_
+
+Docker Web UI's
+---------------
+Docker is a completly command line experience, which is fine for hackers, but some people prefer a more graphical experience, and for those folks I would recommend checking out these projects that people have started.
+
+Dockland
+~~~~~~~~
+A ruby based Docker web UI
+Code: https://github.com/dynport/dockland
+
+Shipyard
+~~~~~~~~
+A python/django based Docker web UI
+Code: https://github.com/ehazlett/shipyard
+
+DockerUI
+~~~~~~~~
+A Angular.js based Docker web UI
+Code: https://github.com/crosbymichael/dockerui
+
+
+Docker Libraries
+-----------------
+If you want to write some code to interact with Docker, there is most likely already a binding for your programming language. Check out the link in the documentation to find what is available. If there isn't one available for your language of choice, feel free to create your own, and let us know so we can update the documentation.
+
+`Docker Library list in the Docker Docs <http://docs.docker.io/en/latest/api/docker_remote_api/#id15>`_
 
 What can I do to help?
 ======================
@@ -1667,7 +1698,7 @@ Parameters
 ~~~~~~~~~~
 - CONTAINER: The Container ID for the container you want to restart
 - OPTIONS:
-    - t: wait t seconds before restarting the container
+    - t: Number of seconds to try to stop for before killing the container. Once killed it will then be restarted
 
 Usage
 ~~~~~
@@ -1692,11 +1723,11 @@ restart multiple containers
     335c587d6ad1
     1347dbb9d32f
 
-restart container with 10 second delay
+restart container with 15 second timeout
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
 
-    $ docker restart -t 10 335c587d6ad1
+    $ docker restart -t 15 335c587d6ad1
     335c587d6ad1
 
 rm
@@ -1763,91 +1794,255 @@ Remove more then one image
 
 run
 ---
+Run a command in a new container
 
 Parameters
 ~~~~~~~~~~
+IMAGE: The name of the image you want to create a container from
+OPTIONS:
+    - a=map[]: Attach to stdin, stdout or stderr.
+    - c=0: CPU shares (relative weight)
+    - d=false: Detached mode: leave the container running in the background
+    - e=[]: Set environment variables
+    - h="": Container host name
+    - i=false: Keep stdin open even if not attached
+    - m=0: Memory limit (in bytes)
+    - p=[]: Map a network port to the container
+    - t=false: Allocate a pseudo-tty
+    - u="": Username or UID
+    - d=[]: Set custom dns servers for the container
+    - v=[]: Creates a new volume and mounts it at the specified path.
+    - volumes-from="": Mount all volumes from the given container.
+    - b=[]: Create a bind mount with: [host-dir]:[container-dir]:[rw|ro]
+    - entrypoint="": Overwrite the default entrypoint set by the image.
 
 Usage
 ~~~~~
+::
 
+    $ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 
 Examples
 ~~~~~~~~
+
+Run container in foreground
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO:
+
+Run container in background
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO:
+
+Start container with memory limit
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO:
+
+Limit containers CPU shares
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO:
+
+Set container environment variables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO:
+
+Attach a Volume to a container
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO:
+
+Set custom DBS server for the container
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO:
+
+Create bind mount for container
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO:
+
+Override the default entrypoint set by image
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO:
 
 search
 ------
+Search for an image in the docker index
 
 Parameters
 ~~~~~~~~~~
+- TERM: Search term
+- OPTIONS:
+    - notrunc
 
 Usage
 ~~~~~
+::
+
+    $ docker search [OPTIONS] TERM
 
 
 Examples
 ~~~~~~~~
+
+Normal search
+^^^^^^^^^^^^^
+::
+
+    $ docker search base
+
+Show full results
+^^^^^^^^^^^^^^^^^
+This will not truncate the description field for the search results
+::
+
+    $ docker search -notrunc base
 
 start
 -----
+Start one or more stopped containers
 
 Parameters
 ~~~~~~~~~~
+- CONTAINER: The container ID for the container you want to start
 
 Usage
 ~~~~~
+::
 
+    $ docker start CONTAINER [CONTAINER...]
 
 Examples
 ~~~~~~~~
+
+Start one container
+^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker start 335c587d6ad1
+    335c587d6ad1
+
+Start two containers
+^^^^^^^^^^^^^^^^^^^^
+::
+    
+    $ docker start 335c587d6ad1 1347dbb9d32f
+    335c587d6ad1
+    1347dbb9d32f
 
 stop
 ----
+Stop a running container
 
 Parameters
 ~~~~~~~~~~
+- CONTAINER: The container ID for the container you want to stop
+- OPTIONS:
+    - t=10: Number of seconds to try to stop for before killing the container.
 
 Usage
 ~~~~~
+::
 
+    $ docker stop [OPTIONS] CONTAINER [CONTAINER...]
 
 Examples
 ~~~~~~~~
+
+Stop one container
+^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker stop 335c587d6ad1
+    335c587d6ad1
+
+Stop two containers
+^^^^^^^^^^^^^^^^^^^^
+::
+    
+    $ docker stop 335c587d6ad1 1347dbb9d32f
+    335c587d6ad1
+    1347dbb9d32f
+
+Stop container with 15 second timeout
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker stop -t 15 335c587d6ad1
+    335c587d6ad1
+
 
 tag
 ---
+Tag an image into a repository
 
 Parameters
 ~~~~~~~~~~
+- IMAGE: The image to tag
+- REPOSITORY: The repository name in the registry
+- TAG: The tag name
+- OPTIONS:
+    - f=false: Force
 
 Usage
 ~~~~~
+::
 
+    $ docker tag [OPTIONS] IMAGE REPOSITORY [TAG]
 
 Examples
 ~~~~~~~~
+
+Tag an image
+^^^^^^^^^^^^
+TODO:
+
+Tag an image, without specifying a Tag
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TODO:
+
+Force setting a Tag
+^^^^^^^^^^^^^^^^^^^
+TODO:
+
 
 version
 -------
+Show the docker version information
 
 Parameters
 ~~~~~~~~~~
+None
 
 Usage
 ~~~~~
+::
 
+    $ docker version
 
 Examples
 ~~~~~~~~
+::
+
+    $ docker version
+    Client version: 0.4.8
+    Server version: 0.4.8
+    Go version: go1.1
+
 
 wait
 ----
+Block until a container stops, then print its exit code
 
 Parameters
 ~~~~~~~~~~
+- CONTAINER: The container ID for the container you want to wait for
 
 Usage
 ~~~~~
-
+::
+    
+    $ docker wait CONTAINER
 
 Examples
 ~~~~~~~~
+::
+
+    $ docker wait 335c587d6ad1
+    0
