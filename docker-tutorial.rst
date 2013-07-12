@@ -280,6 +280,16 @@ Repository
 ----------
 A repository is a group of images located in the docker registry. There are two types of repositories, Top level and user repositories. Top level repositories don't have a '/' in the name and they are usually reserved for base images. These Top level repositories is what most people build their repositories on top of. They are controlled by the maintainers of Docker. User repositories are repositories that anyone can upload into the registry and share with other people.
 
+Getting Help with Docker
+========================
+If you have a question or problem when using Docker, there are a number of different ways to help you. Here is a list of the ways, pick the one that works best for you.
+
+- IRC: #docker on freenode, There are a bunch (250+) people normally in this channel, come on in, and ask your question, we are very friendly and we don't bite. Also newbie questions are welcome.
+- Email: There is a google group called docker-club. Join the list, and ask any questions you might have. https://groups.google.com/d/forum/docker-club
+- Twitter: http://twitter.com/getdocker/ Follow along, if you aren't already, lots of great info posted every day.
+- StackOverflow: We love Stack Overflow, if you also enjoy it, feel free to post a question using the `docker` tag, and one of the many Docker fans  will get back to you quickly. If you love getting points, feel free to answer questions as well.
+- Bugs and feature requests: If you have a bug or feature request, submit them to GitHub. http://www.github.com/dotcloud/docker
+
 Part 1. Getting Started
 =======================
 Now that we have the boring stuff out of the way lets start playing with Docker. The very first example we are going to do is a very simple one, we will spin up a container and print ``hello world`` to the screen.
@@ -627,6 +637,25 @@ Part 7: Automating Docker
 - Remote API
 - web ui's
 - list of libraries
+
+
+What can I do to help?
+======================
+If you are a big fan of Docker, and want to know how to help out, then look at the list below, and see if any of them are things that you can do.
+
+- Contribute to Docker, it could be as small as a bug fix, documentation update, or a new feature. Look through the `docker issues <https://github.com/dotcloud/docker/issues?state=open>`_, and see if anything tickles your fancy.
+- Tweet about how much you love Docker
+- Write a blog post about how you use Docker, and how others can do what you have done.
+- Talk at a conference or meetup. This is a good way to introduce docker to a new set of potential Docker lovers.
+- Create a product that uses Docker, and let everyone know how Docker made your life easier.
+- Make a video showing how you use Docker, and upload to YouTube/Vimeo.
+- Answer questions on 
+    - Stack Overflow
+    - IRC
+    - Mailing list
+- Attend the Docker hack days and meet other Docker users, and let us know how we can make Docker even better.
+- Get a `Docker` sticker, and display it proudly.
+- Wear your Docker shirt and wear it around town all day.
 
 
 Docker Commands
