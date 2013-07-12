@@ -1594,9 +1594,9 @@ Pull User repository
 
     $ docker pull samalba/hipache
 
-Pull image by tag
-^^^^^^^^^^^^^^^^^
-replace `latest` with what ever tag name you want to pull.
+Pull repository by tag
+^^^^^^^^^^^^^^^^^^^^^^
+replace `latest` with the tag name you want to pull.
 ::
 
     $ docker pull samalba/hipache:latest
@@ -1610,29 +1610,65 @@ or use the command line flag `-t`
 
 push
 ----
+Push an image or a repository to the docker registry server
 
 Parameters
 ~~~~~~~~~~
+- NAME: the name of the repository to push to the registry
 
 Usage
 ~~~~~
+::
+
+    $ docker push NAME
 
 
 Examples
 ~~~~~~~~
+::
+
+    $ docker push kencochrane/testrepo
+
 
 restart
 -------
+Restart one or more running containers
 
 Parameters
 ~~~~~~~~~~
+- CONTAINER: The Container ID for the container you want to restart
+- OPTIONS:
+    - t: wait t seconds before restarting the container
 
 Usage
 ~~~~~
+::
 
+    $ docker restart
 
 Examples
 ~~~~~~~~
+restart container
+^^^^^^^^^^^^^^^^^
+::
+
+    $ docker restart 335c587d6ad1
+    335c587d6ad1
+
+restart multiple containers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker restart 335c587d6ad1 1347dbb9d32f
+    335c587d6ad1
+    1347dbb9d32f
+
+restart container with 10 second delay
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker restart -t 10 335c587d6ad1
+    335c587d6ad1
 
 rm
 --
