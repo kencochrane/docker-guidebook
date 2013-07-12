@@ -1418,26 +1418,37 @@ Kill more then one container
 
 login
 -----
-Register or Login to the docker registry server. If you have an account it will log you in, and cache the credentials, if you don't  have an account it will create one for you, and automatically log you in.
+Register or Login to the docker registry server. If you have an account it will log you in, and cache the credentials, if you don't  have an account it will create one for you, and automatically log you in. You can pass in the username, email and password as command line parameters to easily script out the login process.
 
 Parameters
 ~~~~~~~~~~
-None
+- OPTIONS:
+    - e: email
+    - p: password
+    - u: username
 
 Usage
 ~~~~~
 ::
 
-    $ docker login
+    $ docker login [OPTIONS]
 
 Examples
 ~~~~~~~~
+Login with prompts
+^^^^^^^^^^^^^^^^^^
 ::
 
     $ docker login
     Username (): myusername
     Password:
     Email (): myusername@example.com
+    Login Succeeded
+
+Login with parameters
+^^^^^^^^^^^^^^^^^^^^^
+::
+    $ docker login -u myusername -p mypassword -e myusername@example.com
     Login Succeeded
 
 logs
@@ -1467,42 +1478,135 @@ Examples
 
 port
 ----
+Lookup the public-facing port which is NAT-ed to PRIVATE_PORT
 
 Parameters
 ~~~~~~~~~~
+- CONTAINER: The Container ID for the container you want to find the port for
+- PRIVATE_PORT: The private port, you want to find the matching Public port for
 
 Usage
 ~~~~~
+::
 
+     $ docker port CONTAINER PRIVATE_PORT
 
 Examples
 ~~~~~~~~
+::
+
+    $ docker port 335c587d6ad1 6379
+    49153
 
 ps
 --
+List containers
 
 Parameters
 ~~~~~~~~~~
+- OPTIONS:
+    - -a=false: Show all containers. Only running containers are shown by default.
+    - -notrunc=false: Don't truncate output
+    - -q=false: Only display numeric IDs
 
 Usage
 ~~~~~
+::
 
+    docker ps [OPTIONS]
 
 Examples
 ~~~~~~~~
+
+Show running containers
+^^^^^^^^^^^^^^^^^^^^^^^
+::
+    
+    $ docker ps
+    ID                  IMAGE                    COMMAND                CREATED             STATUS              PORTS
+    335c587d6ad1        joffrey/busybox:latest   /bin/sh -c while tru   3 minutes ago       Up 3 minutes        49153->6379
+
+Show all containers
+^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker ps -a
+    ID                  IMAGE                    COMMAND                CREATED             STATUS              PORTS
+    335c587d6ad1        joffrey/busybox:latest   /bin/sh -c while tru   3 minutes ago       Up 3 minutes        49153->6379
+    1347dbb9d32f        joffrey/busybox:latest   /bin/sh -c while tru   4 minutes ago       Exit 137
+    db2db67170ba        joffrey/busybox:latest   /bin/echo hi           5 minutes ago       Exit 0
+    a5e78640ece4        joffrey/busybox:latest   sh                     6 days ago          Exit 0
+    0775b219a48a        joffrey/busybox:latest   sh                     6 days ago          Exit 127
+    1668f16b3ef4        joffrey/busybox:latest   bash                   6 days ago          Exit 127
+    ... trimed
+
+show all containers full output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker ps -a -notrunc
+    ID                                                                 IMAGE                    COMMAND                                                         CREATED             STATUS              PORTS
+    335c587d6ad121519e1489b837e80a5efb748669c86a8bdd485867759fb3c9a7   joffrey/busybox:latest   /bin/sh -c while true; do echo hello world; sleep 1; done   4 minutes ago       Up 4 minutes        49153->6379
+    1347dbb9d32fcafe922a58e6b01c56d04d35fbd3f3226e3789c30310222eceee   joffrey/busybox:latest   /bin/sh -c while true; do echo hello world; sleep 1; done   5 minutes ago       Exit 137
+    db2db67170ba9e1df14cadcaa6f172ad743b387eea3a9c454001279649463cdb   joffrey/busybox:latest   /bin/echo hi                                                6 minutes ago       Exit 0
+    ... Trimmed
+
+show only container ids
+^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker ps -q -a
+    335c587d6ad1
+    1347dbb9d32f
+    db2db67170ba
+    a5e78640ece4
+    0775b219a48a
+    ... trimmed
 
 pull
 ----
+Pull an image or a repository from the docker registry server. By default it will always pull down the latest version, but you can also pull by tag.
 
 Parameters
 ~~~~~~~~~~
-
+- NAME: the name of the repository to pull from registry
+- OPTIONS:
+    - -t: Tag, if you want to pull down a tagged version of the repository.
 Usage
 ~~~~~
+::
+
+    $ docker pull NAME
 
 
 Examples
 ~~~~~~~~
+
+Pull library repository
+^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker pull base
+
+Pull User repository
+^^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker pull samalba/hipache
+
+Pull image by tag
+^^^^^^^^^^^^^^^^^
+replace `latest` with what ever tag name you want to pull.
+::
+
+    $ docker pull samalba/hipache:latest
+
+or use the command line flag `-t`
+
+::
+
+    $ docker pull -t latest samalba/hipache
+
 
 push
 ----
