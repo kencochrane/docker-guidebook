@@ -1,9 +1,13 @@
 :date: 2013-07-05 10:48:29
 :tags: docker, tutorial
 :category: blog
-:slug: the-ultimate-docker-tutorial
+:slug: the-docker-guidebook
 :author: Ken Cochrane
-:title: the-ultimate-docker-tutorial
+:title: The Docker Guidebook
+
+====================
+The Docker Guidebook
+====================
 
 TODO:
 
