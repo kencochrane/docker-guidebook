@@ -1644,7 +1644,7 @@ Usage
 ~~~~~
 ::
 
-    $ docker restart
+    $ docker restart [OPTIONS] CONTAINER [CONTAINER ...]
 
 Examples
 ~~~~~~~~
@@ -1672,29 +1672,65 @@ restart container with 10 second delay
 
 rm
 --
+Remove a container
 
 Parameters
 ~~~~~~~~~~
+- CONTAINER: The Container ID for the container you want to remove
+- OPTIONS:
+    - v: Remove the volumes associated to the container
 
 Usage
 ~~~~~
+::
 
+    $ docker rm [OPTIONS] CONTAINER
 
 Examples
 ~~~~~~~~
+
+Remove container
+^^^^^^^^^^^^^^^^
+::
+
+    $ docker rm 335c587d6ad1
+
+Remove container and volume
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker rm -v 335c587d6ad1
+
 
 rmi
 ---
+Remove one or more images
 
 Parameters
 ~~~~~~~~~~
+- IMAGE: The ID for the image you want to remove
 
 Usage
 ~~~~~
+::
 
+    $ docker rmi IMAGE [IMAGE...]
 
 Examples
 ~~~~~~~~
+
+Remove one image
+^^^^^^^^^^^^^^^^
+::
+
+    $ docker rmi bced7ad27b98
+
+Remove more then one image
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    $ docker rmi bced7ad27b98 e74096c5172b
+
 
 run
 ---
