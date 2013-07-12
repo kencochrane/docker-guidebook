@@ -6,22 +6,16 @@
 :title: the-ultimate-docker-tutorial
 
 TODO:
-Topics
 
-- commands
-    - list all of them with explanation of all switches and examples on how to use each
-- remote api
-    - libraries
-    - web ui's
 - build files
     - how to
     - examples
-- using external mounts (not finished yet)
 - setting up your own private registry
 - docker run
     - limiting memory, cpu
     - detached vs attached
     - volume/bind mounting
+    - using external mounts (not finished yet)
 
 .. image:: docker_logo.png
 
@@ -619,11 +613,14 @@ If you made a mistake and need to delete a repository, you can do this by loggin
 Part 4: Docker Buildfiles
 =========================
 TODO:
-Go over what a Docker Buildfile is, and how to make their own. With examples.
+
+- Go over what a Docker Buildfile is, and how to make their own.
+- With examples
 
 Part 5: Advanced Usage
 ======================
 TODO:
+
 - docker run
     - limiting memory, cpu
     - detached vs attached
@@ -633,7 +630,10 @@ TODO:
 Part 6: Using a Private Registry
 ================================
 TODO:
+
+- what is the private registry, and why would you use?
 - setting up your own private registry
+- how to use the private registry
 
 
 Part 7: Automating Docker
@@ -651,16 +651,19 @@ Docker is a completly command line experience, which is fine for hackers, but so
 Dockland
 ~~~~~~~~
 A ruby based Docker web UI
+
 Code: https://github.com/dynport/dockland
 
 Shipyard
 ~~~~~~~~
 A python/django based Docker web UI
+
 Code: https://github.com/ehazlett/shipyard
 
 DockerUI
 ~~~~~~~~
-A Angular.js based Docker web UI
+An Angular.js based Docker web UI
+
 Code: https://github.com/crosbymichael/dockerui
 
 
