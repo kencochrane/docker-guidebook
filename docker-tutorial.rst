@@ -23,7 +23,12 @@ TODO:
 
 .. image:: docker_logo.png
 
-.. contents:: Table of Contents
+.. sectnum::
+
+.. sidebar:: Table of Contents
+
+   .. contents:: Table of Contents
+      :depth: 3
 
 Introduction
 ============

@@ -14,6 +14,7 @@ all: check html
 	$(RSTOOL) $(OPS) $< $(addprefix $(DSTDIR), $@)
 
 html: dstdir $(HTMLFILES) 
+	cp *.png $(DSTDIR)
 	@echo Output is in $(DSTDIR)
 
 check:
