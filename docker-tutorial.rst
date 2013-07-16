@@ -23,12 +23,6 @@ TODO:
 
 .. image:: docker_logo.png
 
-.. sectnum::
-
-.. sidebar:: Table of Contents
-
-   .. contents:: Table of Contents
-      :depth: 3
 
 Introduction
 ============
@@ -36,14 +30,23 @@ The goal of this tutorial is to introduce you to `Docker <http://docker.io>`_, s
 
 This guide is open source and available on `github.com <https://github.com/kencochrane/docker-tutorial>`_. If you would like to add to it or fix something, please `fork it <https://github.com/kencochrane/docker-tutorial>`_ and submit a pull request.
 
-What is docker?
+.. sectnum::
+
+.. sidebar:: Table of Contents
+
+   .. contents:: Table of Contents
+      :depth: 3
+      :backlinks: entry
+
+
+What is Docker?
 ===============
 Docker is a tool created by the folks at `dotCloud <http://dotcloud.com>`_ to make using LinuX Containers (`LXC <http://lxc.sourceforge.net/>`_) easier to use. Linux Containers are basically light weight Virtual Machines (`VM <http://en.wikipedia.org/wiki/Virtual_machine>`_). A linux container runs Unix processes with strong guarantees of isolation across servers. Your software runs repeatably everywhere because its Container includes all of its dependencies.
 
 If you still don't understand what Docker is, and what it can do for you, don't worry, keep reading and it will become clear soon enough.
 
-How is Docker's containers different from a normal Virtual Machine?
--------------------------------------------------------------------
+How are Docker's Containers Different from Virtual Machines?
+------------------------------------------------------------
 Docker, which uses LinuX Containers (LXC) run in the same kernel as it's host. This allows it to share a lot of the host's resources. It also uses `AuFS <http://aufs.sourceforge.net>`_ for the file system. It also manages the networking for you as well.
 
 AuFS is a layered file system, so you can have a read only part, and a write part, and it merges those together. So you could have the common parts of the file system as read only, which are shared amongst all of your containers, and then give each container it's own mount for writing.
@@ -638,12 +641,105 @@ TODO:
 
 Part 6: Using a Private Registry
 ================================
-TODO:
 
-- what is the private registry, and why would you use?
-- setting up your own private registry
-- how to use the private registry
+One of the things that makes Docker so useful is how easy it is to
+pull ready-to-use images from a central location, Docker's Central
+Registry. It is just as easy to push your own image (or collection of
+tagged images as a repository) to the same public registry so that
+everyone can benefit from your newly Dockerized service.
 
+But sometimes you can't share your repository with the world because
+it contains proprietary code or confidential information. Today we are
+introducing an easy way to share repositories on your own registry so
+that you can control access to them and still share them among
+multiple Docker daemons. You can decide if your registry is public or
+private.
+
+You'll need the `latest version of Docker
+<http://docs.docker.io/en/latest/installation/upgrading/>`_ (>=0.5.0)
+to use this new feature, and you must run this version as both the
+daemon and the client. You'll also need the `Docker registry code
+<https://github.com/dotcloud/docker-registry>`_.
+
+Using Push and Pull with a Private Registry
+-------------------------------------------
+
+You've already seen how to push and pull from the Central Registry. To
+push to or pull from your *own* registry, you just need to add the
+registry's location to the repository name. It will look like
+``my.registry.address:port/repositoryname.``
+
+Let's say I want to push the repository "ubuntu" to my local registry,
+which runs on my local machine, on the port 5000:
+::
+
+  # First, make sure you have the "ubuntu" repository:
+  docker pull ubuntu
+
+  # Then, find the image id that corresponds to the ubuntu repository
+  docker images | grep ubuntu | grep latest
+  ubuntu  latest  8dbd9e392a96  12 weeks ago  263 MB (virtual 263 MB)
+
+  # Almost there! 
+  # Tag to create a repository with the full registry location.
+  # The location becomes a permanent part of the repository name.
+  docker tag 8dbd9e392a96 localhost.localdomain:5000/ubuntu
+
+  # Finally, push the new repository to its home location.
+  docker push localhost.localdomain:5000/ubuntu
+
+Obviously, the push will fail if no registry server answer locally on
+the port 5000. We'll briefly show how to start your own registry
+server in the next subsection.
+
+.. NOTE::
+
+   The punctuation in the repository name is important! Docker looks
+   for either a "."  (domain separator) or ":" (port separator) to
+   learn that the first part of the repository name is a location and
+   not a user name. If you just had localhost without either
+   ``.localdomain`` or ``:5000`` (either one would do) then Docker
+   would believe that localhost is a username, as in
+   ``localhost/ubuntu`` or ``samalba/hipache``. It would then try to
+   push to the default Central Registry. Having a dot or colon in the
+   first part tells Docker that this name contains a hostname and that
+   it should push to your specified location instead.
+
+Installing Your Own Registry
+----------------------------
+
+Docker-Registry is a an Open Source Python application available on Github:
+https://github.com/dotcloud/docker-registry
+
+You can use the Docker-Registry to provide a private or public
+registry service for Docker repositories. Since it is your host, you
+can control access to it by putting it on a private network or
+otherwise protecting its service port. You'll want to choose the DNS
+name of the host carefully, since that name will become a permanent
+part of each repository's name
+(e.g. ``my.registry.name/myrepository``).
+
+You can test out the Docker-Registry first on your local machine
+(presuming you have a Python environment set up).
+::
+
+  git clone https://github.com/dotcloud/docker-registry.git
+  cd docker-registry
+  cp config_sample.yml config.yml
+  pip install -r requirements.txt
+  gunicorn --access-logfile - --log-level debug --debug \
+      -b 0.0.0.0:5000 -w 1 wsgi:application
+
+That sets up the Docker-Registry to listen on all your network
+interfaces on port 5000. You're using the ``dev`` flavor configuration
+by default, which uses local storage for the repositories. The
+configuration file (``config.yml``) also allows you to specify other
+flavors, like production, and to use other storage backends, like S3.
+
+There is currently no authentication built into the Docker-Registry,
+so if you want to keep this private, you'll need to keep the host on a
+private network. We'd recommend running a production Docker-Registry
+behind an Nginx server which sipplies chunked transfer encoding.
 
 Part 7: Automating Docker
 =========================
@@ -1644,6 +1740,7 @@ Parameters
 - NAME: the name of the repository to pull from registry
 - OPTIONS:
     - -t: Tag, if you want to pull down a tagged version of the repository.
+
 Usage
 ~~~~~
 ::
@@ -1736,7 +1833,7 @@ restart multiple containers
     1347dbb9d32f
 
 restart container with 15 second timeout
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
 
     $ docker restart -t 15 335c587d6ad1
@@ -1812,6 +1909,7 @@ Parameters
 ~~~~~~~~~~
 IMAGE: The name of the image you want to create a container from
 OPTIONS:
+
     - a=map[]: Attach to stdin, stdout or stderr.
     - c=0: CPU shares (relative weight)
     - d=false: Detached mode: leave the container running in the background

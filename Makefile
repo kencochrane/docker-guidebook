@@ -1,20 +1,22 @@
 SHELL = /bin/sh
 
-RSTOOL= rst2html.py
-OPS= --toc-top-backlinks
-DSTDIR = htmlfiles/
+RSTOOL = rst2html.py
+RSTOPS = --stylesheet=html4css1.css,tutorial.css
+DSTDIR = htmlfiles
+PYTHON = python
 
-HTMLFILES = $(patsubst %.rst,%.html,$(wildcard *.rst))
+HTMLFILES = $(patsubst %.rst,$(DSTDIR)/%.html,$(wildcard *.rst))
+CSSFILES = $(wildcard *.css)
 
 .PHONY : clean all html utils dstdir
 
 all: check html
 
-%.html : %.rst
-	$(RSTOOL) $(OPS) $< $(addprefix $(DSTDIR), $@)
+$(DSTDIR)/%.html : %.rst  $(CSSFILES)
+	$(RSTOOL) $(RSTOPS) $< $@
 
-html: dstdir $(HTMLFILES) 
-	cp *.png $(DSTDIR)
+html: dstdir $(HTMLFILES)
+	@cp *.png $(DSTDIR)
 	@echo Output is in $(DSTDIR)
 
 check:
@@ -25,7 +27,10 @@ clean:
 	@rm -r $(DSTDIR)
 
 utils:
-	pip install docutils
+	@pip install docutils
 
 dstdir:
 	@mkdir -p $(DSTDIR)
+
+server: html
+	@cd $(DSTDIR); $(PYTHON) -m SimpleHTTPServer 8000 
