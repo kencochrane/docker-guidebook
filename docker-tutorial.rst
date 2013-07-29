@@ -794,7 +794,7 @@ If you are a big fan of Docker, and want to know how to help out, then look at t
     - Mailing list
 - Attend the Docker hack days and meet other Docker users, and let us know how we can make Docker even better.
 - Get a `Docker` sticker, and display it proudly.
-- Wear your Docker shirt and wear it around town all day.
+- Wear your Docker shirt around town all day.
 
 
 Tips and Tricks
