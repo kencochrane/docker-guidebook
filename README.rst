@@ -12,3 +12,25 @@ Still looking for the best open source license, any suggestions let me know.
 
 Thanks,
 Ken
+
+
+Getting started
+===============
+This guide is currently written in `ReStructuredText <http://docutils.sourceforge.net/rst.html>`_ and requires `Sphinx <http://sphinx-doc.org/>`_ to generate the HTML version. The easiest way to do this is the following.
+
+1. Install sphinx::
+
+    $ easy_install -U Sphinx
+    
+    or
+    
+    $ pip install -r requirements.txt
+
+2. Build the html::
+
+    $ make
+
+3. View the results::
+
+    $ make server
+    # open browser to http://localhost:8000/docker-tutorial.html

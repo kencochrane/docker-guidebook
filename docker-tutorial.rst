@@ -821,7 +821,7 @@ Here is a list of all of the current Docker commands, the different parameters t
 
 attach
 ------
-Attach to a running container.
+Attach to a running container. To disconnect press Ctrl+P, Ctrl+Q.
 
 Parameters
 ~~~~~~~~~~
@@ -838,6 +838,7 @@ Example
 ::
 
     docker attach afs232ybh2123d
+    # To disconnect press Ctrl+P, Ctrl+Q.
 
 build
 -----
@@ -1634,6 +1635,7 @@ Login with prompts
 Login with parameters
 ^^^^^^^^^^^^^^^^^^^^^
 ::
+
     $ docker login -u myusername -p mypassword -e myusername@example.com
     Login Succeeded
 
