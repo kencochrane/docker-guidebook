@@ -797,6 +797,24 @@ If you are a big fan of Docker, and want to know how to help out, then look at t
 - Wear your Docker shirt and wear it around town all day.
 
 
+Tips and Tricks
+===============
+This section includes some helpful tips and tricks that will make using Docker even more easier and fun.
+
+Remove all Docker images
+------------------------
+::
+
+    $ docker rmi `docker images -a -q`
+
+Remove all Docker containers
+----------------------------
+::
+
+    $ docker rm `docker ps -a -q`
+
+
+
 Docker Commands
 ===============
 Here is a list of all of the current Docker commands, the different parameters they might have, as well as an example or two on how to use them.
@@ -2131,8 +2149,8 @@ Examples
 ::
 
     $ docker version
-    Client version: 0.4.8
-    Server version: 0.4.8
+    Client version: 0.5.0
+    Server version: 0.5.0
     Go version: go1.1
 
 
