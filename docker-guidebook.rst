@@ -47,15 +47,15 @@ If you still don't understand what Docker is, and what it can do for you, don't 
 
 How are Docker's Containers Different from Virtual Machines?
 ------------------------------------------------------------
-Docker, which uses LinuX Containers (LXC) run in the same kernel as it's host. This allows it to share a lot of the host's resources. It also uses `AuFS <http://aufs.sourceforge.net>`_ for the file system. It also manages the networking for you as well.
+Docker, which uses LinuX Containers (LXC) run in the same kernel as its host. This allows it to share a lot of the host's resources. It also uses `AuFS <http://aufs.sourceforge.net>`_ for the file system. It also manages the networking for you as well.
 
-AuFS is a layered file system, so you can have a read only part, and a write part, and it merges those together. So you could have the common parts of the file system as read only, which are shared amongst all of your containers, and then give each container it's own mount for writing.
+AuFS is a layered file system, so you can have a read only part, and a write part, and it merges those together. So you could have the common parts of the file system as read only, which are shared amongst all of your containers, and then give each container its own mount for writing.
 
 So let's say you have a container image that is 1GB in size. If you wanted to use a Full VM, you would need to have 1GB times x number of VMs you want. With LXC and AuFS you can share the bulk of the 1GB and if you have 1000 containers you still might only have a little over 1GB of space for the containers OS, assuming they are all running the same OS image.
 
-A full virtualized system gets it's own set of resources allocated to it, and does minimal sharing. You get more isolation, but it is much heavier (requires more resources).
+A full virtualized system gets its own set of resources allocated to it, and does minimal sharing. You get more isolation, but it is much heavier (requires more resources).
 
-With LXC you get less isolation, but they are more lightweight and require less resources. So you could easily run 1000's on a host, and it doesn't even blink. Try doing that with Xen, and unless you have a really big host, I don't think it is possible.
+With LXC you get less isolation, but they are more lightweight and require less resources. So you could easily run 1000's on a host, and it doesn't even blink. Try doing that with Xen - unless you have a really big host, I don't think it is possible.
 
 A full virtualized system usually takes minutes to start, LXC containers take seconds, and most times less then a second.
 
@@ -80,7 +80,7 @@ In order for Docker to run correctly on your server, you need to have a few thin
 
 Kernel version
 ~~~~~~~~~~~~~~
-The reason why Docker needs to run in a kernel version of 3.8 or greater is because there are some kernel bugs that are in the older versions that cause problems in some cases. Some people have ran Docker fine on lower kernels, so if you can't run on 3.8, do so at your own risk. There is talk about an effort to back port the bug fixes to the older kernel trees, so that in the future they will be available on the older kernel versions. For more information about this see. https://github.com/dotcloud/docker/pull/1062
+The reason why Docker needs to run in a kernel version of 3.8 or greater is because there are some kernel bugs that are in the older versions that cause problems in some cases. Some people have run Docker fine on lower kernels, but if you can't run on 3.8, do so at your own risk. There is talk about an effort to back port the bug fixes to the older kernel trees, so that in the future they will be available on the older kernel versions. For more information about this see. https://github.com/dotcloud/docker/pull/1062
 
 AUFS
 ~~~~
@@ -316,7 +316,7 @@ Now you might be wondering what is Docker doing here exactly. It doesn't look li
 5. Setup IP
 6. Setup NATing
 7. Executed the process in the container
-8. Captured it's output
+8. Captured its output
 9. Printed to screen
 10. Stopped the container
 
