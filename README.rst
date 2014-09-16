@@ -33,4 +33,4 @@ This guide is currently written in `ReStructuredText <http://docutils.sourceforg
 3. View the results::
 
     $ make server
-    # open browser to http://localhost:8000/docker-tutorial.html
+    # open browser to http://localhost:8000/docker-guidebook.html
