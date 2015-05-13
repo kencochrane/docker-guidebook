@@ -41,7 +41,7 @@ This guide is open source and available on `github.com <https://github.com/kenco
 
 What is Docker?
 ===============
-Docker is a tool created by the folks at `dotCloud <http://dotcloud.com>`_ to make using LinuX Containers (`LXC <http://lxc.sourceforge.net/>`_) easier to use. Linux Containers are basically light weight Virtual Machines (`VM <http://en.wikipedia.org/wiki/Virtual_machine>`_). A linux container runs Unix processes with strong guarantees of isolation across servers. Your software runs repeatably everywhere because its Container includes all of its dependencies.
+Docker is a tool created by the folks at `dotCloud <http://dotcloud.com>`_ to make LinuX Containers (`LXC <http://lxc.sourceforge.net/>`_) easier to use. Linux Containers are basically light weight Virtual Machines (`VM <http://en.wikipedia.org/wiki/Virtual_machine>`_). A linux container runs Unix processes with strong guarantees of isolation across servers. Your software runs repeatably everywhere because its Container includes all of its dependencies.
 
 If you still don't understand what Docker is, and what it can do for you, don't worry, keep reading and it will become clear soon enough.
 
@@ -61,18 +61,18 @@ A full virtualized system usually takes minutes to start, LXC containers take se
 
 There are pros and cons for each type of virtualized system. If you want full isolation with guaranteed resources then a full VM is the way to go. If you just want to isolate processes from each other and want to run a ton of them on a reasonably sized host, then LXC might be the way to go.
 
-For more information check out these set of blog posts which do a good job of explaining now LXC works: http://blog.dotcloud.com/under-the-hood-linux-kernels-on-dotcloud-part
+For more information check out these set of blog posts which do a good job of explaining how LXC works: http://blog.dotcloud.com/under-the-hood-linux-kernels-on-dotcloud-part
 
 
 Installing Docker
 =================
-Before you can install Docker you need to decide how you want to install it. There are three ways to install it, you can install from source, download a compiled binary, or install via your systems package manager. 
+Before you can install Docker you need to decide how you want to install it. There are three ways to install it, you can install from source, download a compiled binary, or install via your system's package manager. 
 
 For detailed instructions on how to install Docker on your system for each of the following steps, check out the official Docker documentation http://docs.docker.io/en/latest/installation/
 
 Requirements
 ------------
-In order for Docker to run correctly on your server, you need to have a few things. For more details on the kernel requirements see this page: see http://docs.docker.io/en/latest/installation/kernel/
+In order for Docker to run correctly on your server, you need to have a few things. For more details on the kernel requirements see this page: http://docs.docker.io/en/latest/installation/kernel/
 
 - Kernel version greater then 3.8 and Cgroups and namespaces must be enabled.
 - AUFS : AUFS is included in the kernels built by the Debian and Ubuntu distributions, but not built into the standard kernel, so if you are using another distribution you will need to add it to your kernel.
@@ -80,7 +80,7 @@ In order for Docker to run correctly on your server, you need to have a few thin
 
 Kernel version
 ~~~~~~~~~~~~~~
-The reason why Docker needs to run in a kernel version of 3.8 or greater is because there are some kernel bugs that are in the older versions that cause problems in some cases. Some people have run Docker fine on lower kernels, but if you can't run on 3.8, do so at your own risk. There is talk about an effort to back port the bug fixes to the older kernel trees, so that in the future they will be available on the older kernel versions. For more information about this see. https://github.com/dotcloud/docker/pull/1062
+The reason why Docker needs to run in a kernel version of 3.8 or greater is because there are some kernel bugs that are in the older versions that cause problems in some cases. Some people have run Docker fine on lower kernels, but if you can't run on 3.8, do so at your own risk. There is a talk about an effort to back port the bug fixes to the older kernel trees, so that in the future they will be available on the older kernel versions. For more information about this see: https://github.com/dotcloud/docker/pull/1062
 
 AUFS
 ~~~~
@@ -88,19 +88,19 @@ Currently AUFS is the standard file system for Docker, but there is an effort un
 
 Package Manager
 ---------------
-The most common way to install Docker is via your server's package manager. On Ubuntu that is as simple as running the following command ``sudo apt-get install lxc-docker``. This is an easy way to install docker, and keep it up to date. 
+The most common way to install Docker is via your server's package manager. On Ubuntu that is as simple as running the following command 'sudo apt-get install lxc-docker'. This is an easy way to install docker, and keep it up to date. 
 
 The package will also install an init script so that the docker daemon will start up automatically.
 
-If you are installing on a production server, this is the recommended way to install. 
+If you are installing on a production server, this is the recommended way. 
 
 Upgrading:
 ~~~~~~~~~~
-To upgrade you would upgrade the same way you upgrade any other package for your system. On Ubuntu you would run 'sudo apt-get upgrade'
+To upgrade you would upgrade the same way you upgrade any other package for your system. On Ubuntu you would run 'sudo apt-get upgrade'.
 
 Binaries
 --------
-If a docker package isn't available for your package manager, you can download the binaries directly. When a new version of docker is released the binaries are uploaded to http://get.docker.io, so that you can download directly from there. Here is an example on how to download the latest docker release.
+If a docker package isn't available for your package manager, you can download the binaries directly. When a new version of docker is released the binaries are uploaded to http://get.docker.io, so that you can download directly from there. Here is an example on how to download the latest docker release:
 
 ::
 
@@ -127,7 +127,7 @@ From Source
 -----------
 Installing from a package manager or from a binary is fine if you want to only install released versions. But if you want to be on the cutting edge and install some features that are either on a feature branch, or something that isn't released yet, you will need to compile from source.
 
-Compiling from source is a little more complicated because you will need to have GO 1.1 and all other dependences install on your system, but it isn't too bad. 
+Compiling from source is a little more complicated because you will need to have GO 1.1 and all other dependences installed on your system, but it isn't too bad. 
 
 Here is what you need to do to get it up and running on Ubuntu::
 
@@ -157,13 +157,13 @@ Docker requires Go 1.1, if you have an older version it will not compile correct
 
 Docker Daemon
 =============
-The Docker daemon needs to be running on your system to control the containers. The daemon needs to be run as Root so that it can have access to everything it needs.
+The Docker daemon needs to be running on your system to manage the containers. The daemon needs to be run as Root so that it can have access to everything it needs.
 
 Starting the daemon
 -------------------
-There are two ways to start the daemon, you can start it using an init script so that it starts on system boot, and manually starting the daemon and sending to the background. The init script is the preferred way of doing this. If you install Docker via a package manager you already have the init script on your system.
+There are two ways to start the daemon, you can start it using an init script so that it starts on system boot, or manually starting the daemon and then sending it to the background. The init script is the preferred way of doing this. If you install Docker via a package manager you already have the init script on your system.
 
-To start it manually you need to use a command like this.
+To start the Docker daemon manually you need to use a command like this.
 
 ::
 
@@ -180,7 +180,7 @@ To change the host and port that docker listens to you will need to use the ``-H
 - tcp://:port -> tcp connection on 127.0.0.1:port
 - unix://path/to/socket -> unix socket located at path/to/socket
 
-When you do this, you need to also let the docker client know what daemon you want to connect too. To do that you have to also pass in the -H flag to with the ip:port of the daemon to connect too.
+When you do this, you need to also let the docker client know what daemon you want to connect too. To do that you have to also pass in the -H flag to with the ip:port of the daemon to connect to.
 
 ::
 
@@ -190,14 +190,14 @@ When you do this, you need to also let the docker client know what daemon you wa
     # Download a base image using the daemon on port 5555
     docker -H :5555 pull base
 
-You can use multiple -H, for example, if you want to listen on both tcp and a unix socket
+You can use multiple -H flags, for example, if you want to listen on both tcp and a unix socket:
 
 ::
 
     # Run docker in daemon mode on 127.0.0.1:4243 and unix socket unix:///var/run/docker.sock
     sudo <path to>/docker -H tcp://127.0.0.1:4243 -H unix:///var/run/docker.sock
     
-    # Download a base image (no need to put the -H since it is listen on default port :4243)
+    # Download a base image (no need to put the -H since it listens on default port :4243)
     docker pull base
     
     # OR (pull via the unix socket)
@@ -208,7 +208,7 @@ Configuration
 -------------
 Currently if you want to configure the docker daemon, you can either pass in command switches to the docker daemon on startup, or you can set ENV variables that the docker daemon will pick up. I have proposed a better approach for configuring docker, the idea is to use a ``docker.conf`` file so that it is easier to set and is more obvious. Details can be found here: https://github.com/dotcloud/docker/issues/937
 
-There are two ENV variables that you can set today, there maybe more added in the future.
+There are two ENV variables that you can set till now, there maybe more added in the future.
 
 DEBUG
 ~~~~~
@@ -218,7 +218,7 @@ defaults to DEBUG=0, set to DEBUG=1 to enable.
 
 DOCKER_INDEX_URL
 ~~~~~~~~~~~~~~~~
-This tells Docker which Docker index to use. You will most likely not use this setting, it is mostly used for Docker developer when they want to try things out with the test index before they release the code. 
+This tells Docker which Docker index to use. You will most likely not use this setting, it is mostly used for Docker developers when they want to try things out with the test index before they release the code. 
 
 defaults to DOCKER_INDEX_URL=https://index.docker.io
 
@@ -236,9 +236,9 @@ Logs
 ----
 There is no official Docker log file right now, I have opened an issue and requested one: https://github.com/dotcloud/docker/issues/936 but in the meantime if you are using upstart you can use ``/var/log/upstart/docker.log`` which has some information, but not as much as I would like.
 
-Testing Docker install
-======================
-Now that you have Docker running, you can start to issue some Docker commands to see how things are working. The very first commands that I always run are ``Docker version`` and ``Docker info``. These tell me quickly if I have everything working correctly. 
+Testing the Docker install
+==========================
+Now that you have Docker running, you can start to issue some Docker commands to see how things are working. The very first commands that I always run are ``Docker version`` and ``Docker info``. These commands tell me quickly if I have everything working correctly. 
 ::
 
     $ docker version
@@ -276,7 +276,7 @@ An image is a read only layer used to build a container. They do not change.
 
 Container
 ---------
-Is basically a self contained runtime environment that is built using one or more images. You can commit your changes to a container and create an image.
+A container is basically a self contained runtime environment that is built using one or more images. You can commit your changes to a container and create an image.
 
 index / registry
 ----------------
@@ -284,28 +284,28 @@ These are public or private servers where people can upload their repositories s
 
 Repository
 ----------
-A repository is a group of images located in the docker registry. There are two types of repositories, Top level and user repositories. Top level repositories don't have a '/' in the name and they are usually reserved for base images. These Top level repositories is what most people build their repositories on top of. They are controlled by the maintainers of Docker. User repositories are repositories that anyone can upload into the registry and share with other people.
+A repository is a group of images located in the docker registry. There are two types of repositories, Top level and user repositories. Top level repositories don't have a '/' in the name and they are usually reserved for base images. These Top level repositories is what most people build their repositories on top of. They are managed by the maintainers of Docker. User repositories are repositories that anyone can upload into the registry and share with other people.
 
 Getting Help with Docker
 ========================
-If you have a question or problem when using Docker, there are a number of different ways to help you. Here is a list of the ways, pick the one that works best for you.
+If you have a question or problem when using Docker, there are a number of different ways to get help. Here is a list of the ways, pick the one that works best for you.
 
 - IRC: #docker on freenode, There are a bunch (250+) people normally in this channel, come on in, and ask your question, we are very friendly and we don't bite. Also newbie questions are welcome.
 - Email: There is a google group called docker-club. Join the list, and ask any questions you might have. https://groups.google.com/d/forum/docker-club
 - Twitter: http://twitter.com/getdocker/ Follow along, if you aren't already, lots of great info posted every day.
-- StackOverflow: We love Stack Overflow, if you also enjoy it, feel free to post a question using the `docker` tag, and one of the many Docker fans  will get back to you quickly. If you love getting points, feel free to answer questions as well.
+- StackOverflow: We love Stack Overflow, if you also enjoy it, feel free to post a question using the `docker` tag, and one of the many Docker fans will get back to you quickly. If you love getting points, feel free to answer questions as well.
 - Bugs and feature requests: If you have a bug or feature request, submit them to GitHub. http://www.github.com/dotcloud/docker
 
 Part 1. Getting Started
 =======================
-Now that we have the boring stuff out of the way lets start playing with Docker. The very first example we are going to do is a very simple one, we will spin up a container and print ``hello world`` to the screen.
+Now that we have the boring stuff out of the way let's start playing with Docker. The very first example we are going to do is a very simple one, we will spin up a container and print ``hello world`` to the screen.
 ::
 
-    #run a simple echo command, that will echo hello world back to the console over standard out.
+    #run a simple echo command, that will echo hello world back to the console over standard output.
     $ docker run base /bin/echo hello world
     hello world
 
-If this was your first docker command you will notice that it will need to download the base image first. It only needs to do this once, and it caches it locally so you don't need to do this again. We could have broken these out into two commands ``docker pull base`` and then the docker run command, but I was lazy and put them together, and Docker is smart enough to know what I want to do, and do it for me.
+If this is your first docker command you will notice that it will need to download the base image first. It only needs to do this once, and it caches it locally so you don't need to do this again. We could have broken these out into two commands ``docker pull base`` and then the docker run command, but I was lazy and just put them together, and Docker is smart enough to know what I want to do, and do it for me.
 
 Now you might be wondering what is Docker doing here exactly. It doesn't look like much because we picked such a simple example, but here is what is happening.
 
@@ -332,15 +332,15 @@ If we run the ``docker images`` command we should see the base image in our list
     base                ubuntu-quantal      b750fe79269d        3 months ago        24.65 kB (virtual 180.1 MB)
     base                ubuntu-quantl       b750fe79269d        3 months ago        24.65 kB (virtual 180.1 MB)
 
-Notice how you see the same image more then once, that is because there are more then one tag for the same image.
+Notice how you see the same image more then once, that is because there are more than one tag for the same image.
 
-If we want to see the container we just ran we can run the ``docker ps`` command. Since it isn't running anymore we need to use the ``-a`` flag to show us all of the image::
+If we want to see the container we can run the ``docker ps`` command. Since it isn't running anymore we need to use the ``-a`` flag to show all the images::
 
     $ docker ps -a
     ID                  IMAGE               COMMAND                CREATED             STATUS              PORTS
     861361e27501        base:latest         /bin/echo hello world  1 minutes ago       Exit 0
 
-Lets do something a little more complicated. We are going to do the same thing, but instead of having the container exit right after we start, we want it to keep running in the background, and print hello world every second::
+Let's do something a little more complicated. We are going to do the same thing, but instead of having the container exit right after we start, we want it to keep running in the background, and print hello world every second::
 
     $ CONTAINER_ID=$(docker run -d base /bin/sh -c "while true; do echo hello world; sleep 1; done")
     $ echo $CONTAINER_ID
@@ -350,7 +350,7 @@ Lets do something a little more complicated. We are going to do the same thing, 
     ID                  IMAGE               COMMAND                CREATED             STATUS              PORTS
     f684fc88aec3        base:latest         /bin/sh -c while tru   33 seconds ago      Up 33 seconds
 
-There we go, now lets see what the container is doing by looking at the logs for the container::
+There we go, now let's see what the container is doing by looking at the logs of the container::
 
     $ docker logs f684fc88aec3
     hello world
@@ -360,14 +360,14 @@ There we go, now lets see what the container is doing by looking at the logs for
     hello world
     .. (trimmed)
 
-Now lets attach to the container and see the results in realtime::
+Now let's attach to the container and see the results in real-time::
 
     $ docker attach f684fc88aec3
     hello world
     hello world
     hello world
 
-Ok, enough fun for this container, lets stop it.
+Ok, enough fun for this container, let's stop it.
 
     $ docker stop f684fc88aec3
     f684fc88aec3
@@ -375,7 +375,7 @@ Ok, enough fun for this container, lets stop it.
     $ docker ps
     ID                  IMAGE               COMMAND             CREATED             STATUS              PORTS
 
-Another thing we could have done to look at the container was inspect the container, we can do this while it is running or after it stopped::
+Another thing we could have done to look at the container was to inspect the container, we can do this while it is running or after it stopped::
 
     $ docker inspect f684fc88aec3
     [{
@@ -434,12 +434,12 @@ Another thing we could have done to look at the container was inspect the contai
 
 There is a lot of information there, you might not need it now, but you may need it in the future, so it is nice to have it available. 
 
-Now that you know the basics go to part 2, and learn how to build an image.
+Now that you have known the basics, go to part 2 and learn how to build an image.
 
 Part 2. Building an image
 =========================
 
-Our goal for this part is to create our own Redis server container. The first thing we will need to do is decide which image we want to build on. I usually pick the ubuntu image, but sometimes it is nice to start from something a little higher so that I don't have to recreate steps, and I can build on the shoulders of others.
+Our goal for this part is to create our own Redis server container. The first thing we will need to do is to decide which image we want to build on. I usually pick the Ubuntu image, but sometimes it is nice to start from something a little higher so that I don't have to recreate steps, and I can build on the shoulders of others.
 
 We are going to run /bin/bash with the ``-i`` and the ``-t`` flags. ``-i`` tells Docker to keep stdin open even if not attached, and ``-t`` is to allocate a pseudo-tty. Once we run the command, we will be connected into the container, and all commands at this point are running from inside the container.
 ::
@@ -452,9 +452,9 @@ We are going to run /bin/bash with the ``-i`` and the ``-t`` flags. ``-i`` tells
     root         1  0.0  0.0  18060  1940 ?        S    21:40   0:00 /bin/bash
     root        11  0.0  0.0  15532  1136 ?        R+   21:41   0:00 ps aux
 
-OK, it looks like we are in, and things are working well, now lets get to work.
+OK, it looks like we are in, and things are working well, now let's get to work.
 
-We are going to update apt and then install redis::
+We are going to update apt and then install Redis::
 
     $ apt-get update
     $ apt-get install redis-server
@@ -465,7 +465,7 @@ We are going to update apt and then install redis::
     root       125  0.0  0.0  15532  1140 ?        R+   22:23   0:00 ps aux
     $ exit
 
-Now we have a container with redis installed. Less see what we did to the container::
+Now we have a container with redis installed. Let's see what we did to the container::
 
     $ docker diff dda8bfc22397
     A /.bash_history
@@ -478,13 +478,13 @@ Now we have a container with redis installed. Less see what we did to the contai
     A /etc/default/redis-server
     .. (trimmed)
 
-It should show you what files have changed (C) and which ones were added (A). Lets save our work so we can reuse this in the future. To do this we need to ``docker commit`` the container to create an image. In order to commit changes you need your container_id. If you don't remember it don'tw worry you can get it from ``docker ps -a``::
+It should show you what files have changed (C) and which ones were added (A). Let's save our work so we can reuse this in the future. To do this we need to ``docker commit`` the container to create an image. In order to commit changes you need your container_id. If you don't remember it don't worry you can get it from ``docker ps -a``::
 
     $ docker ps -a  # grab the container id (this will be the first one in the list)
     $ docker commit <container_id> <your username>/redis
     82ebf04d9385
     
-It returns an image id. if we run ``docker images`` we should see it listed::
+It returns an image id. If we run ``docker images`` we should see it listed::
 
     $ docker images
     REPOSITORY          TAG                 ID                  CREATED              SIZE
@@ -495,12 +495,12 @@ It returns an image id. if we run ``docker images`` we should see it listed::
     kencochrane/redis   latest              82ebf04d9385        About a minute ago   98.46 MB (virtual 278.6 MB)
 
 
-Lets run our new image and see if it works::
+Let's run our new image and see if it works::
 
     $ docker run -d -p 6379 kencochrane/redis /usr/bin/redis-server
     4cbaae2f67d0
 
-The ``-d`` tell docker to run it in the background, just like our Hello World daemon from the last part. ``-p 6379`` says to use 6379 as the port for this container.
+The ``-d`` flag tells docker to run in the background, just like our Hello World daemon from the last part. The flag ``-p 6379`` says to use 6379 as the port for this container.
 
 Test 1
 Connect to the container with the redis-cli.
@@ -540,18 +540,18 @@ When you create an image it is only available on that server. In the past, if yo
 
 The Docker Index is a public Registry where people can upload their custom images and share them with others. This is also where the base images are located and where you pull from when doing a ``docker pull``. There are two parts to the Docker Index. There is a web component that makes it easier for you to mange your images and account with a graphical interface. There is also the API which is what the Docker client uses to interact with the index. This allows you to do some of the tasks from the command line or the web UI.
 
-The Docker Registry is server that stores all of the images and repositories. The Index just has the metadata about the images, repositories and the user accounts, but all of the images and repositories are stored in the Docker Registry.
+The Docker Registry is a server that stores all of the images and repositories. The Index just has the metadata about the images, repositories and the user accounts, but all of the images and repositories are stored in the Docker Registry.
 
 
 Creating an Account on the Docker Index
 ---------------------------------------
-There are two ways to create an account on the Docker Index. Either way requires that you enter a valid email address and that the email address is confirmed before you can activate the account. So make sure you enter a valid email address, and then check you email after registering so that you can click the confirmation link and confirm the account.
+There are two ways to create an account on the Docker Index. Either way requires that you enter a valid email address and that the email address is confirmed before you can activate the account. So make sure you enter a valid email address, and then check your email after registering so that you can click the confirmation link and confirm the account.
 
 Command Line
 ~~~~~~~~~~~~
 If you want to register for an account from the command line you can use the ``docker login`` command. The Docker login command will either register an account for you, or if you already have an account it will log you into the Index.
 
-When you register via the command line, it will register you and login you in a the same time. Remember to click on the activation link in the confirmation email, or else your account isn't fully active.
+When you register via the command line, it will register you and login you in at the same time. Remember to click on the activation link in the confirmation email, otherwise your account isn't fully activated.
 ::
 
     $ docker login
@@ -575,7 +575,7 @@ Once you are activated, you will still need to login to the Docker Index from yo
 
 Credentials
 ~~~~~~~~~~~
-When you login to the Docker Index from the Docker client, it will store your login information, so you don't have to enter it again. Depending on what Docker client version you are using it will either be located at ``~/.dockercfg`` or ``/var/lib/docker/.dockercfg``. If you are having issues logging in you, can delete this file, and it will re-prompt you for your username and password the next time you login. Running Docker login should do the same thing, so do that first, and use this for a last resort.
+When you login to the Docker Index from the Docker client, it will store your login information, so you don't have to enter it again. Depending on what Docker client version you are using it will either be located at ``~/.dockercfg`` or ``/var/lib/docker/.dockercfg``. If you are having issues logging in, you can delete this file, and it will re-prompt you for your username and password the next time when you login. Running Docker login should do the same thing, so do that first, and use this for a last resort.
 
 
 Search
@@ -594,7 +594,7 @@ There are a lot of Docker images in the Index, with more getting added everyday.
 
 Pulling
 -------
-When you found an image that you want to pull down and try out, you would use the ``docker pull`` command. It will then connect to the Docker Index find the repository that you want, and it will let the Docker client know where in the Docker Registry it can download it.
+When you found an image that you want to pull down and try out, you would use the ``docker pull`` command. It will then connect to the Docker Index and find the repository that you want, thus it will let the Docker client know where in the Docker Registry it can download it.
 ::
 
     $ docker pull jbarbier/memcached
@@ -610,12 +610,12 @@ Let's push the repository that we created in the last part, so that others can u
 
     $ docker push kencochrane/redis
 
-Now that it is up on the registry we can use it on any Docker host, and we just need to do a ``Docker pull`` to get it on the host, and I'll know it is going to be the same every time.
+Now that it is up on the registry we can use it on any Docker host, and we just need to do a ``docker pull`` to get it on the host, and I'll know it is going to be the same every time.
 
 
 Repository Description
 ----------------------
-If you want to add a description to your repository so that it lets people know what it does, you can login to the website and edit the description there. There are two descriptions, a short one, which is what shows up in search results, and is plain text. There is also a full description which allows MarkDown and is used to give more detailed information. 
+If you want to add a description to your repository so that it lets people know what it does, you can login to the website and edit the description there. There are two descriptions, a short one, which is what shows up in search results, and is in plain text. There is also a full description which allows MarkDown and is used to give more detailed information. 
 
 Deleting a Repository
 ---------------------
@@ -739,11 +739,11 @@ flavors, like production, and to use other storage backends, like S3.
 There is currently no authentication built into the Docker-Registry,
 so if you want to keep this private, you'll need to keep the host on a
 private network. We'd recommend running a production Docker-Registry
-behind an Nginx server which sipplies chunked transfer encoding.
+behind an Nginx server which supplies chunked transfer encoding.
 
 Part 7: Automating Docker
 =========================
-Running docker commands on the command line are a good way to start, but if you need to automate what you are doing, it isn't ideal. To make this better Docker provides a REST based remote API. The remote API allows you to do everything that the command line does. In fact the command line is just a client for the REST API. 
+Running docker commands on the command line is a good way to start, but if you need to automate what you are doing, it isn't ideal. To make this better Docker provides a REST based remote API. The remote API allows you to do everything that the command line does. In fact the command line is just a client for the REST API. 
 
 Remote API
 -----------
@@ -783,11 +783,11 @@ What can I do to help?
 If you are a big fan of Docker, and want to know how to help out, then look at the list below, and see if any of them are things that you can do.
 
 - Contribute to Docker, it could be as small as a bug fix, documentation update, or a new feature. Look through the `docker issues <https://github.com/dotcloud/docker/issues?state=open>`_, and see if anything tickles your fancy.
-- Tweet about how much you love Docker
+- Tweet about how much you love Docker.
 - Write a blog post about how you use Docker, and how others can do what you have done.
 - Talk at a conference or meetup. This is a good way to introduce docker to a new set of potential Docker lovers.
 - Create a product that uses Docker, and let everyone know how Docker made your life easier.
-- Make a video showing how you use Docker, and upload to YouTube/Vimeo.
+- Make a video showing how you use Docker, and upload it to YouTube/Vimeo.
 - Answer questions on 
     - Stack Overflow
     - IRC
@@ -817,7 +817,7 @@ Remove all Docker containers
 
 Docker Commands
 ===============
-Here is a list of all of the current Docker commands, the different parameters they might have, as well as an example or two on how to use them.
+Here is a list of all the current Docker commands, the different parameters they might have, as well as an example or two on how to use them.
 
 attach
 ------
@@ -825,7 +825,7 @@ Attach to a running container. To disconnect press Ctrl+P, Ctrl+Q.
 
 Parameters
 ~~~~~~~~~~
-- CONTAINER_ID: The ID for the container you want to attach too.
+- CONTAINER_ID: The ID for the container you want to attach to.
 
 Usage
 ~~~~~
@@ -842,7 +842,7 @@ Example
 
 build
 -----
-Build a container from a Dockerfile
+Build a container from a Dockerfile.
 
 Parameters
 ~~~~~~~~~~
@@ -870,8 +870,8 @@ This will read the Dockerfile from the current directory. It will also send any 
 This will send a lot of data to the docker daemon if the current directory contains a lot of data.
 If the absolute path is provided instead of ‘.’, only the files and directories required by the ADD commands from the Dockerfile will be added to the context and transferred to the docker daemon.
 
-Read a Dockerfile from standard in (stdin) without context
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Read a Dockerfile from standard input (stdin) without context
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
 
     docker build - < Dockerfile
@@ -880,7 +880,7 @@ This will read a Dockerfile from Stdin without context. Due to the lack of a con
 
 
 Build from a git repo
-^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 ::
 
     docker build github.com/creack/docker-firefox
@@ -891,9 +891,9 @@ Note that you can specify an arbitrary git repository by using the ‘git://’ 
 
 commit
 ------
-Save your containers state to a container image, so the state can be re-used.
+Save your container's state to a container image, so the state can be re-used.
 
-When you commit your container only the differences between the image the container was created from and the current state of the container will be stored (as a diff). See which images you already have using docker images
+When you commit your container only the differences between the image the container was created from and the current state of the container will be stored (as a diff). See which images you already have using docker images.
 
 In order to commit to the repository it is required to have committed your container to an image with your namespace.
 
@@ -1038,8 +1038,8 @@ Show images
 
     docker images
 
-Show images with name ubuntu
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Show images with the name ubuntu
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
 
     docker images ubuntu
@@ -1069,7 +1069,7 @@ Create a new filesystem image from the contents of a tarball
 
 Parameters
 ~~~~~~~~~~
-- URL: At this time, the URL must start with http and point to a single file archive (.tar, .tar.gz, .bzip) containing a root filesystem. If you would like to import from a local directory or archive, you can use the - parameter to take the data from standard in.
+- URL: At this time, the URL must start with http and point to a single file archive (.tar, .tar.gz, .bzip) containing a root filesystem. If you would like to import from a local directory or archive, you can use the - parameter to take the data from standard input.
 - TAG: name of the tag you want to assign repo after import
 - REPOSITORY: the repository to import into.
 
@@ -1090,7 +1090,7 @@ Import from a remote location
 
 Import from a local file
 ^^^^^^^^^^^^^^^^^^^^^^^^
-Import to docker via pipe and standard in::
+Import to docker via pipe and standard input::
 
     $ cat exampleimage.tgz | docker import - exampleimagelocal
 
@@ -1131,7 +1131,7 @@ Examples
 
 inspect
 -------
-Return low-level information on a container/image. The command will take 1 or more container or image ids and return all of the information relating to those ids.
+Return low-level information of a container/image. The command will take 1 or more containers or image ids and return all of the information relating to those ids.
 
 Parameters
 ~~~~~~~~~~
@@ -1605,7 +1605,7 @@ Kill more then one container
 
 login
 -----
-Register or Login to the docker registry server. If you have an account it will log you in, and cache the credentials, if you don't  have an account it will create one for you, and automatically log you in. You can pass in the username, email and password as command line parameters to easily script out the login process.
+Register or Login to the docker registry server. If you have an account it will log you in, and cache the credentials, if you don't have an account it will create one for you, and automatically log you in. You can pass in the username, email and password as command line parameters to easily script out the login process.
 
 Parameters
 ~~~~~~~~~~
@@ -1728,8 +1728,8 @@ Show all containers
     1668f16b3ef4        joffrey/busybox:latest   bash                   6 days ago          Exit 127
     ... trimed
 
-show all containers full output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+show all containers with full output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ::
 
     $ docker ps -a -notrunc
